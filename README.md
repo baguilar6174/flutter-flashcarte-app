@@ -1,4 +1,4 @@
-# flutter_template_app
+# flutter_flashcarte_app
 
 A new Flutter project.
 
