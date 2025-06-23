@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flashcard App",
+  "homeTitle": "Your Flashcards",
+  "addFlashcard": "Add Flashcard",
+  "markAsLearned": "Mark as Learned"
+}

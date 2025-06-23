@@ -1,0 +1,7 @@
+{
+  "@@locale": "es",
+  "appTitle": "Aplicación de Tarjetas",
+  "homeTitle": "Tus Tarjetas",
+  "addFlashcard": "Agregar Tarjeta",
+  "markAsLearned": "Marcar como Aprendida"
+}
