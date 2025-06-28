@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:flutter_flashcarte_app/core/router/app_router.dart';
 import 'package:flutter_flashcarte_app/core/theme/theme.dart';
 import 'package:flutter_flashcarte_app/core/localization/localization.dart';
 
@@ -20,7 +21,8 @@ class App extends StatelessWidget {
       designSize: const Size(375, 667),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
         localizationsDelegates: const [
           Strings.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -44,7 +46,6 @@ class App extends StatelessWidget {
         locale: Locale("en"),
         supportedLocales: I18n.all,
         themeMode: ThemeMode.dark,
-        home: const MyHomePage(),
       ),
     );
   }

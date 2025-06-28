@@ -43,6 +43,9 @@ dependencies:
   # Use for responsive UI, set default size base on Mock Up
   flutter_screenutil: ^5.9.3
 
+  # router
+  go_router: ^15.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

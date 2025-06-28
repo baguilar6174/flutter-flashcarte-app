@@ -103,6 +103,18 @@ abstract class Strings {
   /// **'Flashcard App'**
   String get appTitle;
 
+  /// No description provided for @homeRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards'**
+  String get homeRoute;
+
+  /// No description provided for @profileRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileRoute;
+
   /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
@@ -120,6 +132,12 @@ abstract class Strings {
   /// In en, this message translates to:
   /// **'Mark as Learned'**
   String get markAsLearned;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
 }
 
 class _StringsDelegate extends LocalizationsDelegate<Strings> {

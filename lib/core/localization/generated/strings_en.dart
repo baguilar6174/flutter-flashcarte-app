@@ -12,6 +12,12 @@ class StringsEn extends Strings {
   String get appTitle => 'Flashcard App';
 
   @override
+  String get homeRoute => 'Cards';
+
+  @override
+  String get profileRoute => 'Profile';
+
+  @override
   String get homeTitle => 'Your Flashcards';
 
   @override
@@ -19,4 +25,7 @@ class StringsEn extends Strings {
 
   @override
   String get markAsLearned => 'Mark as Learned';
+
+  @override
+  String get profileTitle => 'Profile';
 }

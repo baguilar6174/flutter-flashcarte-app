@@ -1,7 +1,10 @@
 {
   "@@locale": "es",
   "appTitle": "Aplicación de Tarjetas",
+  "homeRoute": "Tarjetas",
+  "profileRoute": "Perfil",
   "homeTitle": "Tus Tarjetas",
   "addFlashcard": "Agregar Tarjeta",
-  "markAsLearned": "Marcar como Aprendida"
+  "markAsLearned": "Marcar como Aprendida",
+  "profileTitle": "Perfil"
 }

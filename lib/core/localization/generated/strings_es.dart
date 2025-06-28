@@ -12,6 +12,12 @@ class StringsEs extends Strings {
   String get appTitle => 'Aplicación de Tarjetas';
 
   @override
+  String get homeRoute => 'Tarjetas';
+
+  @override
+  String get profileRoute => 'Perfil';
+
+  @override
   String get homeTitle => 'Tus Tarjetas';
 
   @override
@@ -19,4 +25,7 @@ class StringsEs extends Strings {
 
   @override
   String get markAsLearned => 'Marcar como Aprendida';
+
+  @override
+  String get profileTitle => 'Perfil';
 }

@@ -1,7 +1,10 @@
 {
   "@@locale": "en",
   "appTitle": "Flashcard App",
+  "homeRoute": "Cards",
+  "profileRoute": "Profile",
   "homeTitle": "Your Flashcards",
   "addFlashcard": "Add Flashcard",
-  "markAsLearned": "Mark as Learned"
+  "markAsLearned": "Mark as Learned",
+  "profileTitle": "Profile"
 }
