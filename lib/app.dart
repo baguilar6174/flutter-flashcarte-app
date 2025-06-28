@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:flutter_flashcarte_app/core/theme/theme.dart';
 import 'package:flutter_flashcarte_app/core/localization/localization.dart';
 
 class App extends StatelessWidget {
@@ -14,27 +16,36 @@ class App extends StatelessWidget {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
 
-    return MaterialApp(
-      localizationsDelegates: const [
-        Strings.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      debugShowCheckedModeBanner: false,
-      builder: (BuildContext context, Widget? child) {
-        final MediaQueryData data = MediaQuery.of(context);
-        return MediaQuery(
-          data: data.copyWith(
-            textScaler: TextScaler.noScaling,
-            alwaysUse24HourFormat: true,
-          ),
-          child: child!,
-        );
-      },
-      locale: Locale("en"),
-      supportedLocales: I18n.all,
-      home: const MyHomePage(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 667),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      child: MaterialApp(
+        localizationsDelegates: const [
+          Strings.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        debugShowCheckedModeBanner: false,
+        builder: (BuildContext context, Widget? child) {
+          final MediaQueryData data = MediaQuery.of(context);
+          return MediaQuery(
+            data: data.copyWith(
+              textScaler: TextScaler.noScaling,
+              alwaysUse24HourFormat: true,
+            ),
+            child: child!,
+          );
+        },
+        title: 'Flashcard App',
+        theme: themeLight(context),
+        darkTheme: themeDark(context),
+        locale: Locale("en"),
+        supportedLocales: I18n.all,
+        themeMode: ThemeMode.dark,
+        home: const MyHomePage(),
+      ),
     );
   }
 }

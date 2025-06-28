@@ -40,6 +40,9 @@ dependencies:
   # Use for localization
   intl: ^0.20.2
 
+  # Use for responsive UI, set default size base on Mock Up
+  flutter_screenutil: ^5.9.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
