@@ -46,6 +46,9 @@ dependencies:
   # router
   go_router: ^15.2.4
 
+  # Use for State Management with BLoC pattern
+  flutter_bloc: ^9.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

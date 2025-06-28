@@ -6,5 +6,10 @@
   "homeTitle": "Tus Tarjetas",
   "addFlashcard": "Agregar Tarjeta",
   "markAsLearned": "Marcar como Aprendida",
-  "profileTitle": "Perfil"
+  "profileTitle": "Perfil",
+  "chooseTheme": "Elegir Tema",
+  "themeSystem": "Tema del Sistema",
+  "themeLight": "Tema Claro",
+  "themeDark": "Tema Oscuro",
+  "chooseLanguage": "Elegir Idioma"
 }

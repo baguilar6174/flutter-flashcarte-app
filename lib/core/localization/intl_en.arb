@@ -6,5 +6,10 @@
   "homeTitle": "Your Flashcards",
   "addFlashcard": "Add Flashcard",
   "markAsLearned": "Mark as Learned",
-  "profileTitle": "Profile"
+  "profileTitle": "Profile",
+  "chooseTheme": "Choose Theme",
+  "themeSystem": "Theme System",
+  "themeLight": "Theme Light",
+  "themeDark": "Theme Dark",
+  "chooseLanguage": "Choose Language"
 }

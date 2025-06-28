@@ -28,4 +28,19 @@ class StringsEs extends Strings {
 
   @override
   String get profileTitle => 'Perfil';
+
+  @override
+  String get chooseTheme => 'Elegir Tema';
+
+  @override
+  String get themeSystem => 'Tema del Sistema';
+
+  @override
+  String get themeLight => 'Tema Claro';
+
+  @override
+  String get themeDark => 'Tema Oscuro';
+
+  @override
+  String get chooseLanguage => 'Elegir Idioma';
 }
