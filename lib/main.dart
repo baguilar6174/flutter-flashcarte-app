@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'package:flutter_flashcarte_app/core/di/dependecy_injection.dart';
 import 'package:flutter_flashcarte_app/app.dart';
 
 void main() {
@@ -11,7 +13,7 @@ void main() {
       WidgetsFlutterBinding.ensureInitialized();
 
       /// Register Service locator
-      /// ...
+      await serviceLocator();
 
       return SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,

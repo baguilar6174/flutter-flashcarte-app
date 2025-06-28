@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_flashcarte_app/core/constant.dart';
+import 'package:flutter_flashcarte_app/core/di/dependecy_injection.dart';
 import 'package:flutter_flashcarte_app/core/localization/localization.dart';
 import 'package:flutter_flashcarte_app/core/theme/theme.dart';
+
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,9 +13,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ActiveTheme selectedTheme = context.select(
-      (PreferencesCubit c) => c.state.activeTheme,
-    );
+    final ActiveTheme selectedTheme = sl<PreferencesCubit>().getActiveTheme();
 
     late final List<PreferencesState> listLanguage = [
       PreferencesState(title: Constants.get.english, lang: "en"),

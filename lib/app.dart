@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_flashcarte_app/core/router/app_router.dart';
 import 'package:flutter_flashcarte_app/core/theme/theme.dart';
 import 'package:flutter_flashcarte_app/core/localization/localization.dart';
+import 'package:flutter_flashcarte_app/core/di/dependecy_injection.dart';
 
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PreferencesCubit>(
-          create: (context) => PreferencesCubit()..getActiveTheme(),
+          create: (context) => sl<PreferencesCubit>()..getActiveTheme(),
         ),
       ],
       child: ScreenUtilInit(
