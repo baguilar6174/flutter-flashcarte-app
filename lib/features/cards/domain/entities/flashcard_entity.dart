@@ -1,58 +1,75 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
+
 class Flashcard extends Equatable {
   final String id;
   final String front;
   final String back;
   final DateTime createdAt;
-  final DateTime? lastReviewedAt;
-  final int reviewCount;
-  final double difficulty; // 0.0 (easy) to 1.0 (hard)
+  final DateTime updatedAt;
   final String deckId;
+  final StudyProgress progress;
+  final List<String> tagIds;
 
   const Flashcard({
     required this.id,
     required this.front,
     required this.back,
     required this.createdAt,
-    this.lastReviewedAt,
-    this.reviewCount = 0,
-    this.difficulty = 0.5, // Default difficulty
+    required this.updatedAt,
     required this.deckId,
+    required this.progress,
+    this.tagIds = const [],
   });
 
-  // Business rules as getters
-  bool get isNew => reviewCount == 0;
-  bool get isDifficult => difficulty > 0.7;
-  bool get isEasy => difficulty < 0.3;
-
   // Business logic methods
-  bool shouldReview({int intervalDays = 1}) {
+  bool get isNew => progress.reviewCount == 0;
+  bool get isDifficult => progress.difficulty > 0.7;
+  bool get isEasy => progress.difficulty < 0.3;
+
+  bool shouldReview({DateTime? currentTime}) {
+    final now = currentTime ?? DateTime.now();
+
     if (isNew) return true;
-    if (lastReviewedAt == null) return true;
-    final daysSinceReview = DateTime.now().difference(lastReviewedAt!).inDays;
-    return daysSinceReview >= intervalDays;
+
+    if (progress.nextReviewDate == null) return true;
+
+    return progress.nextReviewDate!.isBefore(now) ||
+        progress.nextReviewDate!.isAtSameMomentAs(now);
   }
 
-  Flashcard markAsReviewed({required bool wasCorrect}) {
-    // Spaced repetition logic
-    double newDifficulty = difficulty;
+  Flashcard markAsReviewed({
+    required bool wasCorrect,
+    required DateTime reviewedAt,
+  }) {
+    final newProgress = progress.updateAfterReview(
+      wasCorrect: wasCorrect,
+      reviewedAt: reviewedAt,
+    );
 
-    if (wasCorrect) {
-      newDifficulty = (difficulty * 0.9).clamp(0.0, 1.0);
-    } else {
-      newDifficulty = (difficulty * 1.1).clamp(0.0, 1.0);
-    }
+    return copyWith(progress: newProgress, updatedAt: reviewedAt);
+  }
 
+  Flashcard copyWith({
+    String? id,
+    String? front,
+    String? back,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? deckId,
+    StudyProgress? progress,
+    List<String>? tagIds,
+  }) {
     return Flashcard(
-      id: id,
-      front: front,
-      back: back,
-      createdAt: createdAt,
-      lastReviewedAt: DateTime.now(),
-      reviewCount: reviewCount + 1,
-      difficulty: newDifficulty,
-      deckId: deckId,
+      id: id ?? this.id,
+      front: front ?? this.front,
+      back: back ?? this.back,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deckId: deckId ?? this.deckId,
+      progress: progress ?? this.progress,
+      tagIds: tagIds ?? this.tagIds,
     );
   }
 
@@ -62,9 +79,9 @@ class Flashcard extends Equatable {
     front,
     back,
     createdAt,
-    lastReviewedAt,
-    reviewCount,
-    difficulty,
+    updatedAt,
     deckId,
+    progress,
+    tagIds,
   ];
 }

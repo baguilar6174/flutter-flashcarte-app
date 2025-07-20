@@ -4,7 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:flutter_flashcarte_app/core/error/failure.dart';
 import 'package:flutter_flashcarte_app/core/usecase/usecase.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/domain/entities/flashcard_entity.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/repositories/flashcard_repository.dart';
 
 class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
@@ -19,15 +19,30 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
     if (validationResult != null) {
       return left(validationResult);
     }
+
     // Step 2: Create entity with business logic
+    final now = DateTime.now();
     final flashcard = Flashcard(
       id: _generateId(),
       front: params.front.trim(),
       back: params.back.trim(),
-      createdAt: DateTime.now(),
+      createdAt: now,
+      updatedAt: now,
       deckId: params.deckId,
-      // difficulty defaults to 0.5 in entity constructor
+      // ✅ UPDATED: Create initial StudyProgress for new card
+      progress: const StudyProgress(
+        reviewCount: 0,
+        difficulty: 0.5, // Default difficulty for new cards
+        lastReviewedAt: null,
+        nextReviewDate: null,
+        correctStreak: 0,
+        incorrectCount: 0,
+        easeFactor: 2.5, // Standard spaced repetition starting factor
+      ),
+      // ✅ UPDATED: Handle tags from params (optional)
+      tagIds: params.tagIds ?? [],
     );
+
     // Step 3: Persist through repository
     return await _repo.create(flashcard);
   }
@@ -55,6 +70,15 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
       return const ValidationFailure('Back text too long (max 500 characters)');
     }
 
+    // ✅ NEW: Validate tag IDs if provided
+    if (params.tagIds != null) {
+      for (final tagId in params.tagIds!) {
+        if (tagId.trim().isEmpty) {
+          return const ValidationFailure('Tag IDs cannot be empty');
+        }
+      }
+    }
+
     return null; // No validation errors
   }
 
@@ -68,13 +92,15 @@ class CreateFlashcardParams extends Equatable {
   final String front;
   final String back;
   final String deckId;
+  final List<String>? tagIds; // ✅ NEW: Optional tag IDs
 
   const CreateFlashcardParams({
     required this.front,
     required this.back,
     required this.deckId,
+    this.tagIds, // Optional tags
   });
 
   @override
-  List<Object> get props => [front, back, deckId];
+  List<Object?> get props => [front, back, deckId, tagIds];
 }
