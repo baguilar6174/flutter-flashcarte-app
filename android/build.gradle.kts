@@ -13,6 +13,19 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
+    // !Solution for isar_flutter_libs error
+    afterEvaluate {
+        if (project.hasProperty("android")) {
+            val androidExtension = project.extensions.findByName("android")
+            if (androidExtension is com.android.build.gradle.BaseExtension) {
+                if (androidExtension.namespace == null) {
+                    androidExtension.namespace = project.group.toString()
+                }
+            }
+        }
+    }
+}
+subprojects {
     project.evaluationDependsOn(":app")
 }
 
