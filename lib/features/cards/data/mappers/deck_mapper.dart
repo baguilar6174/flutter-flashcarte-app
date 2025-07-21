@@ -1,11 +1,7 @@
 import 'package:flutter_flashcarte_app/features/cards/data/models/models.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-extension DeckMapper on Deck {
-  DeckModel toModel() => DeckMapperService.toModel(this);
-}
-
-class DeckMapperService {
+class DeckMapper {
   /// Converts domain entity to data model
   static DeckModel toModel(Deck entity) {
     return DeckModel()

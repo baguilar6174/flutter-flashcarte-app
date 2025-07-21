@@ -1,11 +1,7 @@
 import 'package:flutter_flashcarte_app/features/cards/data/models/models.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-extension FlashcardMapper on Flashcard {
-  FlashcardModel toModel() => FlashcardMapperService.toModel(this);
-}
-
-class FlashcardMapperService {
+class FlashcardMapper {
   /// Converts domain entity to data model for storage
   static FlashcardModel toModel(Flashcard entity) {
     final model = FlashcardModel()

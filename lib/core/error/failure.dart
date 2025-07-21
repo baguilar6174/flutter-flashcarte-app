@@ -48,3 +48,16 @@ class ValidationFailure extends Failure {
   @override
   int get hashCode => message.hashCode;
 }
+
+class DatabaseFailure extends Failure {
+  final String? message;
+
+  const DatabaseFailure(this.message);
+
+  @override
+  bool operator ==(Object other) =>
+      other is DatabaseFailure && other.message == message;
+
+  @override
+  int get hashCode => message.hashCode;
+}
