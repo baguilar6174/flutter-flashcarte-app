@@ -2,8 +2,7 @@ import 'package:fpdart/fpdart.dart';
 
 import 'package:flutter_flashcarte_app/core/error/failure.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
-import 'package:flutter_flashcarte_app/features/cards/domain/datasource/flashcard_datasource.dart'
-    show FlashcardDataSource;
+import 'package:flutter_flashcarte_app/features/cards/domain/datasource/flashcard_datasource.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/repositories/flashcard_repository.dart';
 
 class CardsRepositoryImpl implements FlashcardRepository {
@@ -31,30 +30,12 @@ class CardsRepositoryImpl implements FlashcardRepository {
   }
 
   @override
-  Future<Either<Failure, List<Flashcard>>> getByDeckId(String id) async {
-    // TODO: implement getCardsNeedingReview
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either<Failure, Flashcard>> getById(String id) async {
     final response = await _dataSource.getById(id);
     return response.fold(
       (failure) => Left(failure),
       (response) => Right(response),
     );
-  }
-
-  @override
-  Future<Either<Failure, List<Flashcard>>> getCardsNeedingReview() {
-    // TODO: implement getCardsNeedingReview
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, List<Flashcard>>> searchByText(String query) {
-    // TODO: implement searchByText
-    throw UnimplementedError();
   }
 
   @override

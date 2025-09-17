@@ -9,7 +9,4 @@ abstract interface class FlashcardDataSource {
   Future<Either<Failure, Flashcard>> getById(String id);
   Future<Either<Failure, Unit>> delete(String id);
   Future<Either<Failure, Unit>> update(Flashcard data);
-  Future<Either<Failure, List<Flashcard>>> getByDeckId(String id);
-  Future<Either<Failure, List<Flashcard>>> searchByText(String query);
-  Future<Either<Failure, List<Flashcard>>> getCardsNeedingReview();
 }

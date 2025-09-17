@@ -13,10 +13,6 @@ class IsarService {
           // schemas
           DeckModelSchema,
           FlashcardModelSchema,
-          StudySessionModelSchema,
-          ReviewResultModelSchema,
-          TagModelSchema,
-          UserPreferencesModelSchema,
         ],
         inspector: true,
         directory: dir.path,

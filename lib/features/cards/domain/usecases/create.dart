@@ -39,8 +39,6 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
         incorrectCount: 0,
         easeFactor: 2.5, // Standard spaced repetition starting factor
       ),
-      // ✅ UPDATED: Handle tags from params (optional)
-      tagIds: params.tagIds ?? [],
     );
 
     // Step 3: Persist through repository

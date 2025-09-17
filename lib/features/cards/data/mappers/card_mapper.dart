@@ -17,15 +17,7 @@ class FlashcardMapper {
       ..nextReviewDate = entity.progress.nextReviewDate
       ..correctStreak = entity.progress.correctStreak
       ..incorrectCount = entity.progress.incorrectCount
-      ..easeFactor = entity.progress.easeFactor
-      // Search optimization
-      ..searchText = _buildSearchText(entity.front, entity.back)
-      // Performance indexes
-      ..isNew = entity.isNew
-      ..needsReview = entity.shouldReview()
-      ..difficultyCategory = _calculateDifficultyCategory(
-        entity.progress.difficulty,
-      );
+      ..easeFactor = entity.progress.easeFactor;
     return model;
   }
 
@@ -47,7 +39,6 @@ class FlashcardMapper {
         incorrectCount: model.incorrectCount,
         easeFactor: model.easeFactor,
       ),
-      tagIds: model.tags.map((tag) => tag.tagId).toList(),
     );
   }
 
@@ -59,16 +50,5 @@ class FlashcardMapper {
   /// Converts list of entities to list of models
   static List<FlashcardModel> toModelList(List<Flashcard> entities) {
     return entities.map((entity) => toModel(entity)).toList();
-  }
-
-  // Helper methods for data transformation
-  static String _buildSearchText(String front, String back) {
-    return '${front.toLowerCase()} ${back.toLowerCase()}';
-  }
-
-  static int _calculateDifficultyCategory(double difficulty) {
-    if (difficulty < 0.33) return 1; // Easy
-    if (difficulty < 0.67) return 2; // Medium
-    return 3; // Hard
   }
 }

@@ -10,7 +10,6 @@ class Flashcard extends Equatable {
   final DateTime updatedAt;
   final String deckId;
   final StudyProgress progress;
-  final List<String> tagIds;
 
   const Flashcard({
     required this.id,
@@ -20,7 +19,6 @@ class Flashcard extends Equatable {
     required this.updatedAt,
     required this.deckId,
     required this.progress,
-    this.tagIds = const [],
   });
 
   // Business logic methods
@@ -59,7 +57,6 @@ class Flashcard extends Equatable {
     DateTime? updatedAt,
     String? deckId,
     StudyProgress? progress,
-    List<String>? tagIds,
   }) {
     return Flashcard(
       id: id ?? this.id,
@@ -69,7 +66,6 @@ class Flashcard extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
       deckId: deckId ?? this.deckId,
       progress: progress ?? this.progress,
-      tagIds: tagIds ?? this.tagIds,
     );
   }
 
@@ -82,6 +78,5 @@ class Flashcard extends Equatable {
     updatedAt,
     deckId,
     progress,
-    tagIds,
   ];
 }

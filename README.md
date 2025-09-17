@@ -60,7 +60,7 @@ lib/
 
 ## 🛠️ Getting Started
 
-### 1️⃣ Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/baguilar6174/flutter-flashcarte-app.git
@@ -68,13 +68,19 @@ git clone https://github.com/baguilar6174/flutter-flashcarte-app.git
 cd flutter-flashcarte-app
 ```
 
-### 2️⃣ Install dependencies
+### Install dependencies
 
 ```bash
 flutter pub get
 ```
 
-### 3️⃣ Run the app
+## Generate files
+
+```bash
+flutter pub run build_runner build
+```
+
+### Run the app
 
 ```bash
 flutter run

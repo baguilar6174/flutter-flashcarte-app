@@ -9,17 +9,7 @@ class DeckMapper {
       ..name = entity.name
       ..description = entity.description
       ..createdAt = entity.createdAt
-      ..updatedAt = entity.updatedAt
-      ..colorCode = entity.colorCode
-      // Statistics mapping (denormalized for performance)
-      ..cardCount = entity.statistics.totalCards
-      ..newCardCount = entity.statistics.newCards
-      ..reviewCardCount = entity.statistics.reviewCards
-      ..masteredCardCount = entity.statistics.masteredCards
-      ..lastStudiedAt = entity.statistics.lastStudiedAt
-      ..totalReviews = entity.statistics.totalReviews
-      ..averageAccuracy = entity.statistics.averageAccuracy
-      ..totalStudyTimeMinutes = entity.statistics.totalStudyTimeMinutes;
+      ..updatedAt = entity.updatedAt;
   }
 
   /// Converts data model to domain entity
@@ -30,17 +20,6 @@ class DeckMapper {
       description: model.description,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
-      colorCode: model.colorCode,
-      statistics: DeckStatistics(
-        totalCards: model.cardCount,
-        newCards: model.newCardCount,
-        reviewCards: model.reviewCardCount,
-        masteredCards: model.masteredCardCount,
-        lastStudiedAt: model.lastStudiedAt,
-        totalReviews: model.totalReviews,
-        averageAccuracy: model.averageAccuracy,
-        totalStudyTimeMinutes: model.totalStudyTimeMinutes,
-      ),
     );
   }
 

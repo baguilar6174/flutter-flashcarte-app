@@ -24,18 +24,11 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
         // Set up deck relationship
         await _linkToDeck(model, flashcard.deckId);
 
-        // Set up tag relationships
-        await _linkToTags(model, flashcard.tagIds);
-
         // Save flashcard
         await _isar.flashcardModels.put(model);
 
         // Save relationships
         await model.deck.save();
-        await model.tags.save();
-
-        // Update deck statistics
-        await _updateDeckStatistics(flashcard.deckId);
 
         return Right(flashcard.id);
       });
@@ -52,7 +45,6 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
       // Load relationships for all models
       for (final model in models) {
         await model.deck.load();
-        await model.tags.load();
       }
 
       final entities = FlashcardMapper.toEntityList(models);
@@ -74,7 +66,6 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
       }
       // Load relationships
       await model.deck.load();
-      await model.tags.load();
       final entity = FlashcardMapper.toEntity(model);
       return right(entity);
     } catch (e) {
@@ -104,13 +95,9 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
           await _linkToDeck(updatedModel, flashcard.deckId);
         }
 
-        // Update tag relationships
-        await _updateTagRelationships(updatedModel, flashcard.tagIds);
-
         // Save updated model
         await _isar.flashcardModels.put(updatedModel);
         await updatedModel.deck.save();
-        await updatedModel.tags.save();
         return Right(unit);
       });
     } catch (e) {
@@ -131,96 +118,13 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
           return left(const NoDataFailure('Flashcard not found for deletion'));
         }
 
-        final deckId = model.deck.value?.deckId;
-
         // Delete the flashcard
         await _isar.flashcardModels.delete(model.id);
-
-        // Update deck statistics
-        if (deckId != null) {
-          await _updateDeckStatistics(deckId);
-        }
 
         return Right(unit);
       });
     } catch (e) {
       return Left(_handleDatabaseError(e, 'delete flashcard'));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<Flashcard>>> getByDeckId(String deckId) async {
-    try {
-      // Find deck first
-      final deck = await _isar.deckModels
-          .where()
-          .deckIdEqualTo(deckId)
-          .findFirst();
-
-      if (deck == null) {
-        return left(const NoDataFailure('Deck not found'));
-      }
-
-      // Load flashcards for this deck
-      await deck.flashcards.load();
-
-      // Convert models to entities
-      final models = deck.flashcards.toList();
-      for (final model in models) {
-        await model.tags.load(); // Load tags for each card
-      }
-
-      final entities = FlashcardMapper.toEntityList(models);
-      return Right(entities);
-    } catch (e) {
-      return Left(_handleDatabaseError(e, 'get flashcards by deck'));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<Flashcard>>> searchByText(String query) async {
-    try {
-      final models = await _isar.flashcardModels
-          .where()
-          // .searchTextContains(query.toLowerCase())
-          .findAll();
-
-      // Load relationships
-      for (final model in models) {
-        await model.deck.load();
-        await model.tags.load();
-      }
-
-      final entities = FlashcardMapper.toEntityList(models);
-      return Right(entities);
-    } catch (e) {
-      return Left(_handleDatabaseError(e, 'search flashcards'));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<Flashcard>>> getCardsNeedingReview() async {
-    try {
-      // final now = DateTime.now();
-
-      final models = await _isar.flashcardModels
-          .where()
-          .needsReviewEqualTo(true)
-          // .or()
-          // .nextReviewDateIsNull()
-          // .or()
-          // .nextReviewDateLessThan(now)
-          // .sortByNextReviewDate()
-          .findAll();
-      // Load relationships
-      for (final model in models) {
-        await model.deck.load();
-        await model.tags.load();
-      }
-      final entities = FlashcardMapper.toEntityList(models);
-      return Right(entities);
-    } catch (e) {
-      return Left(_handleDatabaseError(e, 'get cards needing review'));
     }
   }
 
@@ -233,54 +137,6 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
     if (deck != null) {
       model.deck.value = deck;
     }
-  }
-
-  Future<void> _linkToTags(FlashcardModel model, List<String> tagIds) async {
-    if (tagIds.isEmpty) return;
-    final tags = await _isar.tagModels
-        .where()
-        .anyOf(tagIds, (q, tagId) => q.tagIdEqualTo(tagId))
-        .findAll();
-    model.tags.addAll(tags);
-  }
-
-  Future<void> _updateTagRelationships(
-    FlashcardModel model,
-    List<String> tagIds,
-  ) async {
-    // Clear existing tags
-    model.tags.clear();
-    // Add new tags
-    await _linkToTags(model, tagIds);
-  }
-
-  Future<void> _updateDeckStatistics(String deckId) async {
-    final deck = await _isar.deckModels
-        .where()
-        .deckIdEqualTo(deckId)
-        .findFirst();
-    if (deck == null) return;
-    // Load flashcards to calculate statistics
-    await deck.flashcards.load();
-
-    final cards = deck.flashcards.toList();
-
-    // Calculate statistics
-    final totalCards = cards.length;
-    final newCards = cards.where((card) => card.isNew).length;
-    final reviewCards = cards
-        .where((card) => card.needsReview && !card.isNew)
-        .length;
-    final masteredCards = cards
-        .where((card) => !card.needsReview && !card.isNew)
-        .length;
-    // Update deck statistics
-    deck.cardCount = totalCards;
-    deck.newCardCount = newCards;
-    deck.reviewCardCount = reviewCards;
-    deck.masteredCardCount = masteredCards;
-    deck.updatedAt = DateTime.now();
-    await _isar.deckModels.put(deck);
   }
 
   Failure _handleDatabaseError(dynamic error, String operation) {

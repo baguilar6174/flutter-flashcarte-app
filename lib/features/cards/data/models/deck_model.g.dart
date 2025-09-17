@@ -17,73 +17,28 @@ const DeckModelSchema = CollectionSchema(
   name: r'DeckModel',
   id: 7835046003316378680,
   properties: {
-    r'averageAccuracy': PropertySchema(
-      id: 0,
-      name: r'averageAccuracy',
-      type: IsarType.double,
-    ),
-    r'cardCount': PropertySchema(
-      id: 1,
-      name: r'cardCount',
-      type: IsarType.long,
-    ),
-    r'colorCode': PropertySchema(
-      id: 2,
-      name: r'colorCode',
-      type: IsarType.string,
-    ),
     r'createdAt': PropertySchema(
-      id: 3,
+      id: 0,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'deckId': PropertySchema(
-      id: 4,
+      id: 1,
       name: r'deckId',
       type: IsarType.string,
     ),
     r'description': PropertySchema(
-      id: 5,
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
-    r'lastStudiedAt': PropertySchema(
-      id: 6,
-      name: r'lastStudiedAt',
-      type: IsarType.dateTime,
-    ),
-    r'masteredCardCount': PropertySchema(
-      id: 7,
-      name: r'masteredCardCount',
-      type: IsarType.long,
-    ),
     r'name': PropertySchema(
-      id: 8,
+      id: 3,
       name: r'name',
       type: IsarType.string,
     ),
-    r'newCardCount': PropertySchema(
-      id: 9,
-      name: r'newCardCount',
-      type: IsarType.long,
-    ),
-    r'reviewCardCount': PropertySchema(
-      id: 10,
-      name: r'reviewCardCount',
-      type: IsarType.long,
-    ),
-    r'totalReviews': PropertySchema(
-      id: 11,
-      name: r'totalReviews',
-      type: IsarType.long,
-    ),
-    r'totalStudyTimeMinutes': PropertySchema(
-      id: 12,
-      name: r'totalStudyTimeMinutes',
-      type: IsarType.long,
-    ),
     r'updatedAt': PropertySchema(
-      id: 13,
+      id: 4,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -115,13 +70,6 @@ const DeckModelSchema = CollectionSchema(
       target: r'FlashcardModel',
       single: false,
       linkName: r'deck',
-    ),
-    r'studySessions': LinkSchema(
-      id: 2550337803315207379,
-      name: r'studySessions',
-      target: r'StudySessionModel',
-      single: false,
-      linkName: r'deck',
     )
   },
   embeddedSchemas: {},
@@ -137,7 +85,6 @@ int _deckModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.colorCode.length * 3;
   bytesCount += 3 + object.deckId.length * 3;
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.name.length * 3;
@@ -150,20 +97,11 @@ void _deckModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.averageAccuracy);
-  writer.writeLong(offsets[1], object.cardCount);
-  writer.writeString(offsets[2], object.colorCode);
-  writer.writeDateTime(offsets[3], object.createdAt);
-  writer.writeString(offsets[4], object.deckId);
-  writer.writeString(offsets[5], object.description);
-  writer.writeDateTime(offsets[6], object.lastStudiedAt);
-  writer.writeLong(offsets[7], object.masteredCardCount);
-  writer.writeString(offsets[8], object.name);
-  writer.writeLong(offsets[9], object.newCardCount);
-  writer.writeLong(offsets[10], object.reviewCardCount);
-  writer.writeLong(offsets[11], object.totalReviews);
-  writer.writeLong(offsets[12], object.totalStudyTimeMinutes);
-  writer.writeDateTime(offsets[13], object.updatedAt);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeString(offsets[1], object.deckId);
+  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[3], object.name);
+  writer.writeDateTime(offsets[4], object.updatedAt);
 }
 
 DeckModel _deckModelDeserialize(
@@ -173,21 +111,12 @@ DeckModel _deckModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = DeckModel();
-  object.averageAccuracy = reader.readDouble(offsets[0]);
-  object.cardCount = reader.readLong(offsets[1]);
-  object.colorCode = reader.readString(offsets[2]);
-  object.createdAt = reader.readDateTime(offsets[3]);
-  object.deckId = reader.readString(offsets[4]);
-  object.description = reader.readString(offsets[5]);
+  object.createdAt = reader.readDateTime(offsets[0]);
+  object.deckId = reader.readString(offsets[1]);
+  object.description = reader.readString(offsets[2]);
   object.id = id;
-  object.lastStudiedAt = reader.readDateTimeOrNull(offsets[6]);
-  object.masteredCardCount = reader.readLong(offsets[7]);
-  object.name = reader.readString(offsets[8]);
-  object.newCardCount = reader.readLong(offsets[9]);
-  object.reviewCardCount = reader.readLong(offsets[10]);
-  object.totalReviews = reader.readLong(offsets[11]);
-  object.totalStudyTimeMinutes = reader.readLong(offsets[12]);
-  object.updatedAt = reader.readDateTime(offsets[13]);
+  object.name = reader.readString(offsets[3]);
+  object.updatedAt = reader.readDateTime(offsets[4]);
   return object;
 }
 
@@ -199,32 +128,14 @@ P _deckModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
-      return (reader.readString(offset)) as P;
-    case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 7:
-      return (reader.readLong(offset)) as P;
-    case 8:
-      return (reader.readString(offset)) as P;
-    case 9:
-      return (reader.readLong(offset)) as P;
-    case 10:
-      return (reader.readLong(offset)) as P;
-    case 11:
-      return (reader.readLong(offset)) as P;
-    case 12:
-      return (reader.readLong(offset)) as P;
-    case 13:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -236,15 +147,13 @@ Id _deckModelGetId(DeckModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _deckModelGetLinks(DeckModel object) {
-  return [object.flashcards, object.studySessions];
+  return [object.flashcards];
 }
 
 void _deckModelAttach(IsarCollection<dynamic> col, Id id, DeckModel object) {
   object.id = id;
   object.flashcards
       .attach(col, col.isar.collection<FlashcardModel>(), r'flashcards', id);
-  object.studySessions.attach(
-      col, col.isar.collection<StudySessionModel>(), r'studySessions', id);
 }
 
 extension DeckModelByIndex on IsarCollection<DeckModel> {
@@ -426,258 +335,6 @@ extension DeckModelQueryWhere
 
 extension DeckModelQueryFilter
     on QueryBuilder<DeckModel, DeckModel, QFilterCondition> {
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      averageAccuracyEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'averageAccuracy',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      averageAccuracyGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'averageAccuracy',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      averageAccuracyLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'averageAccuracy',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      averageAccuracyBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'averageAccuracy',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardCountEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      cardCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'cardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'cardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'cardCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      colorCodeGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'colorCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'colorCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'colorCode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> colorCodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'colorCode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      colorCodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'colorCode',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> createdAtEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -1049,136 +706,6 @@ extension DeckModelQueryFilter
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'lastStudiedAt',
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'lastStudiedAt',
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtEqualTo(DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastStudiedAt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'lastStudiedAt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'lastStudiedAt',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      lastStudiedAtBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'lastStudiedAt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      masteredCardCountEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'masteredCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      masteredCardCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'masteredCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      masteredCardCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'masteredCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      masteredCardCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'masteredCardCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1309,228 +836,6 @@ extension DeckModelQueryFilter
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> newCardCountEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'newCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      newCardCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'newCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      newCardCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'newCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> newCardCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'newCardCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      reviewCardCountEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'reviewCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      reviewCardCountGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'reviewCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      reviewCardCountLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'reviewCardCount',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      reviewCardCountBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'reviewCardCount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> totalReviewsEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'totalReviews',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalReviewsGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'totalReviews',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalReviewsLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'totalReviews',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> totalReviewsBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'totalReviews',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalStudyTimeMinutesEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'totalStudyTimeMinutes',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalStudyTimeMinutesGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'totalStudyTimeMinutes',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalStudyTimeMinutesLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'totalStudyTimeMinutes',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      totalStudyTimeMinutesBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'totalStudyTimeMinutes',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> updatedAtEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -1651,106 +956,9 @@ extension DeckModelQueryLinks
           r'flashcards', lower, includeLower, upper, includeUpper);
     });
   }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> studySessions(
-      FilterQuery<StudySessionModel> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'studySessions');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'studySessions', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'studySessions', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'studySessions', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'studySessions', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'studySessions', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      studySessionsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(
-          r'studySessions', lower, includeLower, upper, includeUpper);
-    });
-  }
 }
 
 extension DeckModelQuerySortBy on QueryBuilder<DeckModel, DeckModel, QSortBy> {
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByAverageAccuracy() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'averageAccuracy', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByAverageAccuracyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'averageAccuracy', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByColorCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'colorCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByColorCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'colorCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1787,31 +995,6 @@ extension DeckModelQuerySortBy on QueryBuilder<DeckModel, DeckModel, QSortBy> {
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByLastStudiedAt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastStudiedAt', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByLastStudiedAtDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastStudiedAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByMasteredCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'masteredCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      sortByMasteredCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'masteredCardCount', Sort.desc);
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -1821,56 +1004,6 @@ extension DeckModelQuerySortBy on QueryBuilder<DeckModel, DeckModel, QSortBy> {
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByNewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'newCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByNewCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'newCardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByReviewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'reviewCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByReviewCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'reviewCardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByTotalReviews() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalReviews', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> sortByTotalReviewsDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalReviews', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      sortByTotalStudyTimeMinutes() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalStudyTimeMinutes', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      sortByTotalStudyTimeMinutesDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalStudyTimeMinutes', Sort.desc);
     });
   }
 
@@ -1889,42 +1022,6 @@ extension DeckModelQuerySortBy on QueryBuilder<DeckModel, DeckModel, QSortBy> {
 
 extension DeckModelQuerySortThenBy
     on QueryBuilder<DeckModel, DeckModel, QSortThenBy> {
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByAverageAccuracy() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'averageAccuracy', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByAverageAccuracyDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'averageAccuracy', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByColorCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'colorCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByColorCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'colorCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -1973,31 +1070,6 @@ extension DeckModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByLastStudiedAt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastStudiedAt', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByLastStudiedAtDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastStudiedAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByMasteredCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'masteredCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      thenByMasteredCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'masteredCardCount', Sort.desc);
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -2007,56 +1079,6 @@ extension DeckModelQuerySortThenBy
   QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByNewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'newCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByNewCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'newCardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByReviewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'reviewCardCount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByReviewCardCountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'reviewCardCount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByTotalReviews() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalReviews', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy> thenByTotalReviewsDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalReviews', Sort.desc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      thenByTotalStudyTimeMinutes() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalStudyTimeMinutes', Sort.asc);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QAfterSortBy>
-      thenByTotalStudyTimeMinutesDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'totalStudyTimeMinutes', Sort.desc);
     });
   }
 
@@ -2075,25 +1097,6 @@ extension DeckModelQuerySortThenBy
 
 extension DeckModelQueryWhereDistinct
     on QueryBuilder<DeckModel, DeckModel, QDistinct> {
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByAverageAccuracy() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'averageAccuracy');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'cardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByColorCode(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'colorCode', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -2114,47 +1117,10 @@ extension DeckModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByLastStudiedAt() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastStudiedAt');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByMasteredCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'masteredCardCount');
-    });
-  }
-
   QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByNewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'newCardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByReviewCardCount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'reviewCardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct> distinctByTotalReviews() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'totalReviews');
-    });
-  }
-
-  QueryBuilder<DeckModel, DeckModel, QDistinct>
-      distinctByTotalStudyTimeMinutes() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'totalStudyTimeMinutes');
     });
   }
 
@@ -2170,24 +1136,6 @@ extension DeckModelQueryProperty
   QueryBuilder<DeckModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<DeckModel, double, QQueryOperations> averageAccuracyProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'averageAccuracy');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations> cardCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'cardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, String, QQueryOperations> colorCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'colorCode');
     });
   }
 
@@ -2209,46 +1157,9 @@ extension DeckModelQueryProperty
     });
   }
 
-  QueryBuilder<DeckModel, DateTime?, QQueryOperations> lastStudiedAtProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lastStudiedAt');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations> masteredCardCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'masteredCardCount');
-    });
-  }
-
   QueryBuilder<DeckModel, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations> newCardCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'newCardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations> reviewCardCountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'reviewCardCount');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations> totalReviewsProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'totalReviews');
-    });
-  }
-
-  QueryBuilder<DeckModel, int, QQueryOperations>
-      totalStudyTimeMinutesProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'totalStudyTimeMinutes');
     });
   }
 
