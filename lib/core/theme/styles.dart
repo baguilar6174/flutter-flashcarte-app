@@ -17,6 +17,9 @@ ThemeData themeLight(BuildContext context) => ThemeData(
     unselectedItemColor: Palette.shadowDark,
     backgroundColor: Palette.background,
   ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Palette.primary,
+  ),
 );
 
 /// Dark theme
@@ -30,5 +33,8 @@ ThemeData themeDark(BuildContext context) => ThemeData(
     selectedItemColor: Palette.primary,
     unselectedItemColor: Palette.shadowDark,
     backgroundColor: Palette.backgroundDark,
+  ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    backgroundColor: Palette.primary,
   ),
 );

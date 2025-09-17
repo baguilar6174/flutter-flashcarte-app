@@ -14,6 +14,11 @@ class AddPage extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

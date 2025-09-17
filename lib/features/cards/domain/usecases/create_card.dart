@@ -20,7 +20,7 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
       return left(validationResult);
     }
 
-    // Step 2: Create entity with business logic
+    // Create entity with business logic
     final now = DateTime.now();
     final flashcard = Flashcard(
       id: _generateId(),
@@ -29,10 +29,9 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
       createdAt: now,
       updatedAt: now,
       deckId: params.deckId,
-      // ✅ UPDATED: Create initial StudyProgress for new card
       progress: const StudyProgress(
         reviewCount: 0,
-        difficulty: 0.5, // Default difficulty for new cards
+        difficulty: 0.5,
         lastReviewedAt: null,
         nextReviewDate: null,
         correctStreak: 0,
@@ -68,15 +67,6 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
       return const ValidationFailure('Back text too long (max 500 characters)');
     }
 
-    // ✅ NEW: Validate tag IDs if provided
-    if (params.tagIds != null) {
-      for (final tagId in params.tagIds!) {
-        if (tagId.trim().isEmpty) {
-          return const ValidationFailure('Tag IDs cannot be empty');
-        }
-      }
-    }
-
     return null; // No validation errors
   }
 
@@ -90,15 +80,13 @@ class CreateFlashcardParams extends Equatable {
   final String front;
   final String back;
   final String deckId;
-  final List<String>? tagIds; // ✅ NEW: Optional tag IDs
 
   const CreateFlashcardParams({
     required this.front,
     required this.back,
     required this.deckId,
-    this.tagIds, // Optional tags
   });
 
   @override
-  List<Object?> get props => [front, back, deckId, tagIds];
+  List<Object?> get props => [front, back, deckId];
 }
