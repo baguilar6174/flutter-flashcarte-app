@@ -13,13 +13,12 @@ class DeckModel {
   late String deckId;
 
   late String name;
-  late String description;
+  late String? description;
   late DateTime createdAt;
   late DateTime updatedAt;
 
-  // 🔗 RELATIONSHIPS: Deck has many Flashcards
-  @Backlink(to: 'deck')
-  final flashcards = IsarLinks<FlashcardModel>();
+  // 🔗 RELATIONSHIPS: MANY-TO-MANY RELATIONSHIP: One deck can contain many cards
+  final cards = IsarLinks<CardModel>();
 
   Deck toEntity() {
     return Deck(

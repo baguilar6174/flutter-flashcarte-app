@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:flutter_flashcarte_app/core/error/failure.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/datasource/flashcard_datasource.dart';
-import 'package:flutter_flashcarte_app/features/cards/domain/repositories/flashcard_repository.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/repositories/cards_repository.dart';
 
 class CardsRepositoryImpl implements FlashcardRepository {
   final FlashcardDataSource _dataSource;
@@ -11,7 +11,7 @@ class CardsRepositoryImpl implements FlashcardRepository {
   const CardsRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<Failure, String>> create(Flashcard data) async {
+  Future<Either<Failure, String>> create(Card data) async {
     return await _dataSource.create(data);
   }
 
@@ -21,7 +21,7 @@ class CardsRepositoryImpl implements FlashcardRepository {
   }
 
   @override
-  Future<Either<Failure, List<Flashcard>>> getAll() async {
+  Future<Either<Failure, List<Card>>> getAll() async {
     final response = await _dataSource.getAll();
     return response.fold((failure) => Left(failure), (workoutResponse) {
       if (workoutResponse.isEmpty) return Left(NoDataFailure("No data"));
@@ -30,7 +30,7 @@ class CardsRepositoryImpl implements FlashcardRepository {
   }
 
   @override
-  Future<Either<Failure, Flashcard>> getById(String id) async {
+  Future<Either<Failure, Card>> getById(String id) async {
     final response = await _dataSource.getById(id);
     return response.fold(
       (failure) => Left(failure),
@@ -39,7 +39,7 @@ class CardsRepositoryImpl implements FlashcardRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> update(Flashcard data) async {
+  Future<Either<Failure, Unit>> update(Card data) async {
     return await _dataSource.update(data);
   }
 }

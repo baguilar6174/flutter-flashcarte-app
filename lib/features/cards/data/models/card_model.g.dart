@@ -9,13 +9,13 @@ part of 'card_model.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetFlashcardModelCollection on Isar {
-  IsarCollection<FlashcardModel> get flashcardModels => this.collection();
+extension GetCardModelCollection on Isar {
+  IsarCollection<CardModel> get cardModels => this.collection();
 }
 
-const FlashcardModelSchema = CollectionSchema(
-  name: r'FlashcardModel',
-  id: 429812019528624768,
+const CardModelSchema = CollectionSchema(
+  name: r'CardModel',
+  id: -4511307714291515206,
   properties: {
     r'back': PropertySchema(
       id: 0,
@@ -78,10 +78,10 @@ const FlashcardModelSchema = CollectionSchema(
       type: IsarType.dateTime,
     )
   },
-  estimateSize: _flashcardModelEstimateSize,
-  serialize: _flashcardModelSerialize,
-  deserialize: _flashcardModelDeserialize,
-  deserializeProp: _flashcardModelDeserializeProp,
+  estimateSize: _cardModelEstimateSize,
+  serialize: _cardModelSerialize,
+  deserialize: _cardModelDeserialize,
+  deserializeProp: _cardModelDeserializeProp,
   idName: r'id',
   indexes: {
     r'cardId': IndexSchema(
@@ -99,22 +99,23 @@ const FlashcardModelSchema = CollectionSchema(
     )
   },
   links: {
-    r'deck': LinkSchema(
-      id: 6919308194883238625,
-      name: r'deck',
+    r'decks': LinkSchema(
+      id: 2532767840250149094,
+      name: r'decks',
       target: r'DeckModel',
-      single: true,
+      single: false,
+      linkName: r'cards',
     )
   },
   embeddedSchemas: {},
-  getId: _flashcardModelGetId,
-  getLinks: _flashcardModelGetLinks,
-  attach: _flashcardModelAttach,
+  getId: _cardModelGetId,
+  getLinks: _cardModelGetLinks,
+  attach: _cardModelAttach,
   version: '3.1.0+1',
 );
 
-int _flashcardModelEstimateSize(
-  FlashcardModel object,
+int _cardModelEstimateSize(
+  CardModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -125,8 +126,8 @@ int _flashcardModelEstimateSize(
   return bytesCount;
 }
 
-void _flashcardModelSerialize(
-  FlashcardModel object,
+void _cardModelSerialize(
+  CardModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -145,13 +146,13 @@ void _flashcardModelSerialize(
   writer.writeDateTime(offsets[11], object.updatedAt);
 }
 
-FlashcardModel _flashcardModelDeserialize(
+CardModel _cardModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = FlashcardModel();
+  final object = CardModel();
   object.back = reader.readString(offsets[0]);
   object.cardId = reader.readString(offsets[1]);
   object.correctStreak = reader.readLong(offsets[2]);
@@ -168,7 +169,7 @@ FlashcardModel _flashcardModelDeserialize(
   return object;
 }
 
-P _flashcardModelDeserializeProp<P>(
+P _cardModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -204,26 +205,25 @@ P _flashcardModelDeserializeProp<P>(
   }
 }
 
-Id _flashcardModelGetId(FlashcardModel object) {
+Id _cardModelGetId(CardModel object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _flashcardModelGetLinks(FlashcardModel object) {
-  return [object.deck];
+List<IsarLinkBase<dynamic>> _cardModelGetLinks(CardModel object) {
+  return [object.decks];
 }
 
-void _flashcardModelAttach(
-    IsarCollection<dynamic> col, Id id, FlashcardModel object) {
+void _cardModelAttach(IsarCollection<dynamic> col, Id id, CardModel object) {
   object.id = id;
-  object.deck.attach(col, col.isar.collection<DeckModel>(), r'deck', id);
+  object.decks.attach(col, col.isar.collection<DeckModel>(), r'decks', id);
 }
 
-extension FlashcardModelByIndex on IsarCollection<FlashcardModel> {
-  Future<FlashcardModel?> getByCardId(String cardId) {
+extension CardModelByIndex on IsarCollection<CardModel> {
+  Future<CardModel?> getByCardId(String cardId) {
     return getByIndex(r'cardId', [cardId]);
   }
 
-  FlashcardModel? getByCardIdSync(String cardId) {
+  CardModel? getByCardIdSync(String cardId) {
     return getByIndexSync(r'cardId', [cardId]);
   }
 
@@ -235,12 +235,12 @@ extension FlashcardModelByIndex on IsarCollection<FlashcardModel> {
     return deleteByIndexSync(r'cardId', [cardId]);
   }
 
-  Future<List<FlashcardModel?>> getAllByCardId(List<String> cardIdValues) {
+  Future<List<CardModel?>> getAllByCardId(List<String> cardIdValues) {
     final values = cardIdValues.map((e) => [e]).toList();
     return getAllByIndex(r'cardId', values);
   }
 
-  List<FlashcardModel?> getAllByCardIdSync(List<String> cardIdValues) {
+  List<CardModel?> getAllByCardIdSync(List<String> cardIdValues) {
     final values = cardIdValues.map((e) => [e]).toList();
     return getAllByIndexSync(r'cardId', values);
   }
@@ -255,37 +255,36 @@ extension FlashcardModelByIndex on IsarCollection<FlashcardModel> {
     return deleteAllByIndexSync(r'cardId', values);
   }
 
-  Future<Id> putByCardId(FlashcardModel object) {
+  Future<Id> putByCardId(CardModel object) {
     return putByIndex(r'cardId', object);
   }
 
-  Id putByCardIdSync(FlashcardModel object, {bool saveLinks = true}) {
+  Id putByCardIdSync(CardModel object, {bool saveLinks = true}) {
     return putByIndexSync(r'cardId', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByCardId(List<FlashcardModel> objects) {
+  Future<List<Id>> putAllByCardId(List<CardModel> objects) {
     return putAllByIndex(r'cardId', objects);
   }
 
-  List<Id> putAllByCardIdSync(List<FlashcardModel> objects,
+  List<Id> putAllByCardIdSync(List<CardModel> objects,
       {bool saveLinks = true}) {
     return putAllByIndexSync(r'cardId', objects, saveLinks: saveLinks);
   }
 }
 
-extension FlashcardModelQueryWhereSort
-    on QueryBuilder<FlashcardModel, FlashcardModel, QWhere> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhere> anyId() {
+extension CardModelQueryWhereSort
+    on QueryBuilder<CardModel, CardModel, QWhere> {
+  QueryBuilder<CardModel, CardModel, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension FlashcardModelQueryWhere
-    on QueryBuilder<FlashcardModel, FlashcardModel, QWhereClause> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> idEqualTo(
-      Id id) {
+extension CardModelQueryWhere
+    on QueryBuilder<CardModel, CardModel, QWhereClause> {
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -294,8 +293,7 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> idNotEqualTo(
-      Id id) {
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -317,8 +315,7 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> idGreaterThan(
-      Id id,
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -327,8 +324,7 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> idLessThan(
-      Id id,
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -337,7 +333,7 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> idBetween(
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -353,7 +349,7 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause> cardIdEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> cardIdEqualTo(
       String cardId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
@@ -363,8 +359,8 @@ extension FlashcardModelQueryWhere
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterWhereClause>
-      cardIdNotEqualTo(String cardId) {
+  QueryBuilder<CardModel, CardModel, QAfterWhereClause> cardIdNotEqualTo(
+      String cardId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -399,10 +395,9 @@ extension FlashcardModelQueryWhere
   }
 }
 
-extension FlashcardModelQueryFilter
-    on QueryBuilder<FlashcardModel, FlashcardModel, QFilterCondition> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backEqualTo(
+extension CardModelQueryFilter
+    on QueryBuilder<CardModel, CardModel, QFilterCondition> {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -415,8 +410,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backGreaterThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -431,8 +425,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -447,8 +440,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -467,8 +459,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backStartsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -481,8 +472,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backEndsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -495,8 +485,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'back',
@@ -506,8 +497,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'back',
@@ -517,8 +509,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backIsEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'back',
@@ -527,8 +518,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      backIsNotEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> backIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'back',
@@ -537,8 +527,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -551,8 +540,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdGreaterThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -567,8 +555,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -583,8 +570,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -603,8 +589,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdStartsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -617,8 +602,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdEndsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -631,8 +615,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'cardId',
@@ -642,8 +627,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'cardId',
@@ -653,8 +639,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdIsEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'cardId',
@@ -663,8 +648,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      cardIdIsNotEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> cardIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'cardId',
@@ -673,7 +657,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       correctStreakEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -683,7 +667,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       correctStreakGreaterThan(
     int value, {
     bool include = false,
@@ -697,7 +681,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       correctStreakLessThan(
     int value, {
     bool include = false,
@@ -711,7 +695,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       correctStreakBetween(
     int lower,
     int upper, {
@@ -729,8 +713,8 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      createdAtEqualTo(DateTime value) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> createdAtEqualTo(
+      DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -739,7 +723,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       createdAtGreaterThan(
     DateTime value, {
     bool include = false,
@@ -753,8 +737,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      createdAtLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> createdAtLessThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -767,8 +750,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      createdAtBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> createdAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -785,8 +767,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      difficultyEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> difficultyEqualTo(
     double value, {
     double epsilon = Query.epsilon,
   }) {
@@ -799,7 +780,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       difficultyGreaterThan(
     double value, {
     bool include = false,
@@ -815,8 +796,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      difficultyLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> difficultyLessThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -831,8 +811,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      difficultyBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> difficultyBetween(
     double lower,
     double upper, {
     bool includeLower = true,
@@ -851,8 +830,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      easeFactorEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> easeFactorEqualTo(
     double value, {
     double epsilon = Query.epsilon,
   }) {
@@ -865,7 +843,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       easeFactorGreaterThan(
     double value, {
     bool include = false,
@@ -881,8 +859,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      easeFactorLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> easeFactorLessThan(
     double value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -897,8 +874,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      easeFactorBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> easeFactorBetween(
     double lower,
     double upper, {
     bool includeLower = true,
@@ -917,8 +893,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -931,8 +906,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontGreaterThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -947,8 +921,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -963,8 +936,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -983,8 +955,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontStartsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -997,8 +968,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontEndsWith(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1011,8 +981,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontContains(String value, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontContains(
+      String value,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'front',
@@ -1022,8 +993,9 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontMatches(String pattern, {bool caseSensitive = true}) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'front',
@@ -1033,8 +1005,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontIsEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'front',
@@ -1043,8 +1014,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      frontIsNotEmpty() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> frontIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'front',
@@ -1053,7 +1023,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition> idEqualTo(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1063,8 +1033,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      idGreaterThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -1077,8 +1046,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      idLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -1091,7 +1059,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition> idBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -1108,7 +1076,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       incorrectCountEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1118,7 +1086,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       incorrectCountGreaterThan(
     int value, {
     bool include = false,
@@ -1132,7 +1100,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       incorrectCountLessThan(
     int value, {
     bool include = false,
@@ -1146,7 +1114,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       incorrectCountBetween(
     int lower,
     int upper, {
@@ -1164,7 +1132,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1173,7 +1141,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -1182,7 +1150,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1192,7 +1160,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -1206,7 +1174,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtLessThan(
     DateTime? value, {
     bool include = false,
@@ -1220,7 +1188,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       lastReviewedAtBetween(
     DateTime? lower,
     DateTime? upper, {
@@ -1238,7 +1206,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1247,7 +1215,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -1256,7 +1224,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1266,7 +1234,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -1280,7 +1248,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateLessThan(
     DateTime? value, {
     bool include = false,
@@ -1294,7 +1262,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       nextReviewDateBetween(
     DateTime? lower,
     DateTime? upper, {
@@ -1312,8 +1280,8 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      reviewCountEqualTo(int value) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> reviewCountEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'reviewCount',
@@ -1322,7 +1290,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       reviewCountGreaterThan(
     int value, {
     bool include = false,
@@ -1336,8 +1304,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      reviewCountLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> reviewCountLessThan(
     int value, {
     bool include = false,
   }) {
@@ -1350,8 +1317,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      reviewCountBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> reviewCountBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1368,8 +1334,8 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      updatedAtEqualTo(DateTime value) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> updatedAtEqualTo(
+      DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'updatedAt',
@@ -1378,7 +1344,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
       updatedAtGreaterThan(
     DateTime value, {
     bool include = false,
@@ -1392,8 +1358,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      updatedAtLessThan(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> updatedAtLessThan(
     DateTime value, {
     bool include = false,
   }) {
@@ -1406,8 +1371,7 @@ extension FlashcardModelQueryFilter
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      updatedAtBetween(
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> updatedAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
@@ -1425,530 +1389,529 @@ extension FlashcardModelQueryFilter
   }
 }
 
-extension FlashcardModelQueryObject
-    on QueryBuilder<FlashcardModel, FlashcardModel, QFilterCondition> {}
+extension CardModelQueryObject
+    on QueryBuilder<CardModel, CardModel, QFilterCondition> {}
 
-extension FlashcardModelQueryLinks
-    on QueryBuilder<FlashcardModel, FlashcardModel, QFilterCondition> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition> deck(
+extension CardModelQueryLinks
+    on QueryBuilder<CardModel, CardModel, QFilterCondition> {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decks(
       FilterQuery<DeckModel> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'deck');
+      return query.link(q, r'decks');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterFilterCondition>
-      deckIsNull() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decksLengthEqualTo(
+      int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'deck', 0, true, 0, true);
+      return query.linkLength(r'decks', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decksIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'decks', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decksIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'decks', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decksLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'decks', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
+      decksLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'decks', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> decksLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'decks', lower, includeLower, upper, includeUpper);
     });
   }
 }
 
-extension FlashcardModelQuerySortBy
-    on QueryBuilder<FlashcardModel, FlashcardModel, QSortBy> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByBack() {
+extension CardModelQuerySortBy on QueryBuilder<CardModel, CardModel, QSortBy> {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBack() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'back', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByBackDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBackDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'back', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByCardId() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCardId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cardId', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByCardIdDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCardIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cardId', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByCorrectStreak() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCorrectStreak() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'correctStreak', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByCorrectStreakDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCorrectStreakDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'correctStreak', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByCreatedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByCreatedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByDifficulty() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByDifficulty() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'difficulty', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByDifficultyDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByDifficultyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'difficulty', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByEaseFactor() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByEaseFactor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'easeFactor', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByEaseFactorDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByEaseFactorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'easeFactor', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByFront() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByFront() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'front', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByFrontDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByFrontDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'front', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByIncorrectCount() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByIncorrectCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'incorrectCount', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByIncorrectCountDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByIncorrectCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'incorrectCount', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByLastReviewedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByLastReviewedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastReviewedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByLastReviewedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByLastReviewedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastReviewedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByNextReviewDate() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByNextReviewDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nextReviewDate', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByNextReviewDateDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByNextReviewDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nextReviewDate', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByReviewCount() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByReviewCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reviewCount', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByReviewCountDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByReviewCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reviewCount', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> sortByUpdatedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      sortByUpdatedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 }
 
-extension FlashcardModelQuerySortThenBy
-    on QueryBuilder<FlashcardModel, FlashcardModel, QSortThenBy> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByBack() {
+extension CardModelQuerySortThenBy
+    on QueryBuilder<CardModel, CardModel, QSortThenBy> {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBack() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'back', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByBackDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBackDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'back', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByCardId() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCardId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cardId', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByCardIdDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCardIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'cardId', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByCorrectStreak() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCorrectStreak() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'correctStreak', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByCorrectStreakDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCorrectStreakDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'correctStreak', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByCreatedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByCreatedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByDifficulty() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByDifficulty() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'difficulty', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByDifficultyDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByDifficultyDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'difficulty', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByEaseFactor() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByEaseFactor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'easeFactor', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByEaseFactorDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByEaseFactorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'easeFactor', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByFront() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByFront() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'front', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByFrontDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByFrontDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'front', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenById() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByIncorrectCount() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByIncorrectCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'incorrectCount', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByIncorrectCountDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByIncorrectCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'incorrectCount', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByLastReviewedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByLastReviewedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastReviewedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByLastReviewedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByLastReviewedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastReviewedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByNextReviewDate() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByNextReviewDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nextReviewDate', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByNextReviewDateDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByNextReviewDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'nextReviewDate', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByReviewCount() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByReviewCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reviewCount', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByReviewCountDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByReviewCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'reviewCount', Sort.desc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy> thenByUpdatedAt() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QAfterSortBy>
-      thenByUpdatedAtDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 }
 
-extension FlashcardModelQueryWhereDistinct
-    on QueryBuilder<FlashcardModel, FlashcardModel, QDistinct> {
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct> distinctByBack(
+extension CardModelQueryWhereDistinct
+    on QueryBuilder<CardModel, CardModel, QDistinct> {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByBack(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'back', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct> distinctByCardId(
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByCardId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'cardId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByCorrectStreak() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByCorrectStreak() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'correctStreak');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByCreatedAt() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByDifficulty() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByDifficulty() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'difficulty');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByEaseFactor() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByEaseFactor() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'easeFactor');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct> distinctByFront(
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByFront(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'front', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByIncorrectCount() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByIncorrectCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'incorrectCount');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByLastReviewedAt() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByLastReviewedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastReviewedAt');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByNextReviewDate() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByNextReviewDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'nextReviewDate');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByReviewCount() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByReviewCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'reviewCount');
     });
   }
 
-  QueryBuilder<FlashcardModel, FlashcardModel, QDistinct>
-      distinctByUpdatedAt() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
   }
 }
 
-extension FlashcardModelQueryProperty
-    on QueryBuilder<FlashcardModel, FlashcardModel, QQueryProperty> {
-  QueryBuilder<FlashcardModel, int, QQueryOperations> idProperty() {
+extension CardModelQueryProperty
+    on QueryBuilder<CardModel, CardModel, QQueryProperty> {
+  QueryBuilder<CardModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<FlashcardModel, String, QQueryOperations> backProperty() {
+  QueryBuilder<CardModel, String, QQueryOperations> backProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'back');
     });
   }
 
-  QueryBuilder<FlashcardModel, String, QQueryOperations> cardIdProperty() {
+  QueryBuilder<CardModel, String, QQueryOperations> cardIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'cardId');
     });
   }
 
-  QueryBuilder<FlashcardModel, int, QQueryOperations> correctStreakProperty() {
+  QueryBuilder<CardModel, int, QQueryOperations> correctStreakProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'correctStreak');
     });
   }
 
-  QueryBuilder<FlashcardModel, DateTime, QQueryOperations> createdAtProperty() {
+  QueryBuilder<CardModel, DateTime, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<FlashcardModel, double, QQueryOperations> difficultyProperty() {
+  QueryBuilder<CardModel, double, QQueryOperations> difficultyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'difficulty');
     });
   }
 
-  QueryBuilder<FlashcardModel, double, QQueryOperations> easeFactorProperty() {
+  QueryBuilder<CardModel, double, QQueryOperations> easeFactorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'easeFactor');
     });
   }
 
-  QueryBuilder<FlashcardModel, String, QQueryOperations> frontProperty() {
+  QueryBuilder<CardModel, String, QQueryOperations> frontProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'front');
     });
   }
 
-  QueryBuilder<FlashcardModel, int, QQueryOperations> incorrectCountProperty() {
+  QueryBuilder<CardModel, int, QQueryOperations> incorrectCountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'incorrectCount');
     });
   }
 
-  QueryBuilder<FlashcardModel, DateTime?, QQueryOperations>
+  QueryBuilder<CardModel, DateTime?, QQueryOperations>
       lastReviewedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastReviewedAt');
     });
   }
 
-  QueryBuilder<FlashcardModel, DateTime?, QQueryOperations>
+  QueryBuilder<CardModel, DateTime?, QQueryOperations>
       nextReviewDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nextReviewDate');
     });
   }
 
-  QueryBuilder<FlashcardModel, int, QQueryOperations> reviewCountProperty() {
+  QueryBuilder<CardModel, int, QQueryOperations> reviewCountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'reviewCount');
     });
   }
 
-  QueryBuilder<FlashcardModel, DateTime, QQueryOperations> updatedAtProperty() {
+  QueryBuilder<CardModel, DateTime, QQueryOperations> updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });

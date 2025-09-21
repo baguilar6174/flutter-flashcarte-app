@@ -1,4 +1,3 @@
-// domain/entities/study_progress.dart
 import 'package:equatable/equatable.dart';
 
 class StudyProgress extends Equatable {
@@ -20,9 +19,31 @@ class StudyProgress extends Equatable {
     this.easeFactor = 2.5,
   });
 
+  // Computed properties
   bool get isNew => reviewCount == 0;
   bool get isDifficult => difficulty > 0.7;
   bool get isEasy => difficulty < 0.3;
+
+  /// Get the number of correct answers
+  int get correctCount => reviewCount - incorrectCount;
+
+  /// Get success rate as a percentage
+  double get successRate {
+    if (reviewCount == 0) return 0.0;
+    return (correctCount / reviewCount) * 100;
+  }
+
+  /// Check if the card is overdue for review
+  bool get isOverdue {
+    if (nextReviewDate == null) return false;
+    return DateTime.now().isAfter(nextReviewDate!);
+  }
+
+  /// Get days until next review (negative if overdue)
+  int get daysUntilReview {
+    if (nextReviewDate == null) return 0;
+    return nextReviewDate!.difference(DateTime.now()).inDays;
+  }
 
   StudyProgress updateAfterReview({
     required bool wasCorrect,
@@ -35,12 +56,14 @@ class StudyProgress extends Equatable {
 
     if (wasCorrect) {
       newCorrectStreak = correctStreak + 1;
-      newDifficulty = (difficulty * 0.9).clamp(0.0, 1.0);
+      // Reduce difficulty more gradually for better balance
+      newDifficulty = (difficulty * 0.95).clamp(0.0, 1.0);
       newEaseFactor = (easeFactor + 0.1).clamp(1.3, 2.5);
     } else {
       newCorrectStreak = 0;
       newIncorrectCount = incorrectCount + 1;
-      newDifficulty = (difficulty * 1.2).clamp(0.0, 1.0);
+      // Increase difficulty more gradually
+      newDifficulty = (difficulty + 0.1).clamp(0.0, 1.0);
       newEaseFactor = (easeFactor - 0.2).clamp(1.3, 2.5);
     }
 
@@ -63,6 +86,7 @@ class StudyProgress extends Equatable {
     );
   }
 
+  /// Calculate next review date based on spaced repetition algorithm
   DateTime _calculateNextReviewDate({
     required DateTime reviewedAt,
     required double easeFactor,
@@ -83,11 +107,40 @@ class StudyProgress extends Equatable {
         intervalDays = 6;
         break;
       default:
+        // Standard SM-2 algorithm interval calculation
         intervalDays = ((reviewCount - 2) * easeFactor).round();
+        // Cap the maximum interval to prevent cards from disappearing
+        intervalDays = intervalDays.clamp(1, 365); // Max 1 year
         break;
     }
 
     return reviewedAt.add(Duration(days: intervalDays));
+  }
+
+  /// Reset progress to initial state
+  StudyProgress reset() {
+    return const StudyProgress();
+  }
+
+  /// Copy with method for immutable updates
+  StudyProgress copyWith({
+    int? reviewCount,
+    double? difficulty,
+    DateTime? lastReviewedAt,
+    DateTime? nextReviewDate,
+    int? correctStreak,
+    int? incorrectCount,
+    double? easeFactor,
+  }) {
+    return StudyProgress(
+      reviewCount: reviewCount ?? this.reviewCount,
+      difficulty: difficulty ?? this.difficulty,
+      lastReviewedAt: lastReviewedAt ?? this.lastReviewedAt,
+      nextReviewDate: nextReviewDate ?? this.nextReviewDate,
+      correctStreak: correctStreak ?? this.correctStreak,
+      incorrectCount: incorrectCount ?? this.incorrectCount,
+      easeFactor: easeFactor ?? this.easeFactor,
+    );
   }
 
   @override
@@ -100,4 +153,13 @@ class StudyProgress extends Equatable {
     incorrectCount,
     easeFactor,
   ];
+
+  @override
+  String toString() {
+    return 'StudyProgress{reviewCount: $reviewCount, '
+        'difficulty: ${difficulty.toStringAsFixed(2)}, '
+        'correctStreak: $correctStreak, '
+        'successRate: ${successRate.toStringAsFixed(1)}%, '
+        'easeFactor: ${easeFactor.toStringAsFixed(1)}}';
+  }
 }

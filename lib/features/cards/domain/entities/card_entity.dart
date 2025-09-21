@@ -2,23 +2,25 @@ import 'package:equatable/equatable.dart';
 
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-class Flashcard extends Equatable {
+class Card extends Equatable {
   final String id;
   final String front;
   final String back;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final String deckId;
   final StudyProgress progress;
 
-  const Flashcard({
+  /// MANY-TO-MANY RELATIONSHIP: One card can belong to many decks
+  final List<String>? deckIds;
+
+  const Card({
     required this.id,
     required this.front,
     required this.back,
     required this.createdAt,
     required this.updatedAt,
-    required this.deckId,
     required this.progress,
+    this.deckIds,
   });
 
   // Business logic methods
@@ -37,7 +39,7 @@ class Flashcard extends Equatable {
         progress.nextReviewDate!.isAtSameMomentAs(now);
   }
 
-  Flashcard markAsReviewed({
+  Card markAsReviewed({
     required bool wasCorrect,
     required DateTime reviewedAt,
   }) {
@@ -49,7 +51,7 @@ class Flashcard extends Equatable {
     return copyWith(progress: newProgress, updatedAt: reviewedAt);
   }
 
-  Flashcard copyWith({
+  Card copyWith({
     String? id,
     String? front,
     String? back,
@@ -57,15 +59,16 @@ class Flashcard extends Equatable {
     DateTime? updatedAt,
     String? deckId,
     StudyProgress? progress,
+    List<String>? deckIds,
   }) {
-    return Flashcard(
+    return Card(
       id: id ?? this.id,
       front: front ?? this.front,
       back: back ?? this.back,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      deckId: deckId ?? this.deckId,
       progress: progress ?? this.progress,
+      deckIds: deckIds ?? this.deckIds,
     );
   }
 
@@ -76,7 +79,7 @@ class Flashcard extends Equatable {
     back,
     createdAt,
     updatedAt,
-    deckId,
     progress,
+    deckIds,
   ];
 }

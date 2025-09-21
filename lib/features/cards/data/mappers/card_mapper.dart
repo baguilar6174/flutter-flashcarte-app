@@ -3,8 +3,8 @@ import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.d
 
 class FlashcardMapper {
   /// Converts domain entity to data model for storage
-  static FlashcardModel toModel(Flashcard entity) {
-    final model = FlashcardModel()
+  static CardModel toModel(Card entity) {
+    final model = CardModel()
       ..cardId = entity.id
       ..front = entity.front
       ..back = entity.back
@@ -22,14 +22,13 @@ class FlashcardMapper {
   }
 
   /// Converts data model to domain entity for business logic
-  static Flashcard toEntity(FlashcardModel model) {
-    return Flashcard(
+  static Card toEntity(CardModel model) {
+    return Card(
       id: model.cardId,
       front: model.front,
       back: model.back,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
-      deckId: model.deck.value?.deckId ?? '',
       progress: StudyProgress(
         reviewCount: model.reviewCount,
         difficulty: model.difficulty,
@@ -43,12 +42,12 @@ class FlashcardMapper {
   }
 
   /// Converts list of models to list of entities
-  static List<Flashcard> toEntityList(List<FlashcardModel> models) {
+  static List<Card> toEntityList(List<CardModel> models) {
     return models.map((model) => toEntity(model)).toList();
   }
 
   /// Converts list of entities to list of models
-  static List<FlashcardModel> toModelList(List<Flashcard> entities) {
+  static List<CardModel> toModelList(List<Card> entities) {
     return entities.map((entity) => toModel(entity)).toList();
   }
 }

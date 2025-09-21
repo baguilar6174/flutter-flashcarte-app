@@ -64,12 +64,11 @@ const DeckModelSchema = CollectionSchema(
     )
   },
   links: {
-    r'flashcards': LinkSchema(
-      id: -6803198730228395649,
-      name: r'flashcards',
-      target: r'FlashcardModel',
+    r'cards': LinkSchema(
+      id: -483818988402208191,
+      name: r'cards',
+      target: r'CardModel',
       single: false,
-      linkName: r'deck',
     )
   },
   embeddedSchemas: {},
@@ -86,7 +85,12 @@ int _deckModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.deckId.length * 3;
-  bytesCount += 3 + object.description.length * 3;
+  {
+    final value = object.description;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.name.length * 3;
   return bytesCount;
 }
@@ -113,7 +117,7 @@ DeckModel _deckModelDeserialize(
   final object = DeckModel();
   object.createdAt = reader.readDateTime(offsets[0]);
   object.deckId = reader.readString(offsets[1]);
-  object.description = reader.readString(offsets[2]);
+  object.description = reader.readStringOrNull(offsets[2]);
   object.id = id;
   object.name = reader.readString(offsets[3]);
   object.updatedAt = reader.readDateTime(offsets[4]);
@@ -132,7 +136,7 @@ P _deckModelDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
@@ -147,13 +151,12 @@ Id _deckModelGetId(DeckModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _deckModelGetLinks(DeckModel object) {
-  return [object.flashcards];
+  return [object.cards];
 }
 
 void _deckModelAttach(IsarCollection<dynamic> col, Id id, DeckModel object) {
   object.id = id;
-  object.flashcards
-      .attach(col, col.isar.collection<FlashcardModel>(), r'flashcards', id);
+  object.cards.attach(col, col.isar.collection<CardModel>(), r'cards', id);
 }
 
 extension DeckModelByIndex on IsarCollection<DeckModel> {
@@ -519,8 +522,26 @@ extension DeckModelQueryFilter
     });
   }
 
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
+      descriptionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
+      descriptionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'description',
+      ));
+    });
+  }
+
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> descriptionEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -534,7 +555,7 @@ extension DeckModelQueryFilter
 
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
       descriptionGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -549,7 +570,7 @@ extension DeckModelQueryFilter
   }
 
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> descriptionLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -564,8 +585,8 @@ extension DeckModelQueryFilter
   }
 
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> descriptionBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -896,56 +917,52 @@ extension DeckModelQueryObject
 
 extension DeckModelQueryLinks
     on QueryBuilder<DeckModel, DeckModel, QFilterCondition> {
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> flashcards(
-      FilterQuery<FlashcardModel> q) {
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cards(
+      FilterQuery<CardModel> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'flashcards');
+      return query.link(q, r'cards');
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsLengthEqualTo(int length) {
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardsLengthEqualTo(
+      int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'flashcards', length, true, length, true);
+      return query.linkLength(r'cards', length, true, length, true);
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsIsEmpty() {
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'flashcards', 0, true, 0, true);
+      return query.linkLength(r'cards', 0, true, 0, true);
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsIsNotEmpty() {
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'flashcards', 0, false, 999999, true);
+      return query.linkLength(r'cards', 0, false, 999999, true);
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsLengthLessThan(
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardsLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'flashcards', 0, true, length, include);
+      return query.linkLength(r'cards', 0, true, length, include);
     });
   }
 
   QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsLengthGreaterThan(
+      cardsLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'flashcards', length, include, 999999, true);
+      return query.linkLength(r'cards', length, include, 999999, true);
     });
   }
 
-  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition>
-      flashcardsLengthBetween(
+  QueryBuilder<DeckModel, DeckModel, QAfterFilterCondition> cardsLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -953,7 +970,7 @@ extension DeckModelQueryLinks
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
-          r'flashcards', lower, includeLower, upper, includeUpper);
+          r'cards', lower, includeLower, upper, includeUpper);
     });
   }
 }
@@ -1151,7 +1168,7 @@ extension DeckModelQueryProperty
     });
   }
 
-  QueryBuilder<DeckModel, String, QQueryOperations> descriptionProperty() {
+  QueryBuilder<DeckModel, String?, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
     });

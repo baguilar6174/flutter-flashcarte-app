@@ -12,7 +12,7 @@ class IsarService {
         [
           // schemas
           DeckModelSchema,
-          FlashcardModelSchema,
+          CardModelSchema,
         ],
         inspector: true,
         directory: dir.path,

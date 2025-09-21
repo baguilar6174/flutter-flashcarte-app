@@ -6,7 +6,7 @@ import 'package:flutter_flashcarte_app/features/cards/data/models/models.dart';
 part 'card_model.g.dart';
 
 @Collection()
-class FlashcardModel {
+class CardModel {
   Id id = Isar.autoIncrement;
 
   @Index(unique: true)
@@ -26,18 +26,18 @@ class FlashcardModel {
   late int incorrectCount;
   late double easeFactor;
 
-  // 🔗 RELATIONSHIP: Flashcard belongs to Deck
-  final deck = IsarLink<DeckModel>();
+  // 🔗 RELATIONSHIP:  MANY-TO-MANY RELATIONSHIP: One card can belong to many decks
+  @Backlink(to: 'cards')
+  final decks = IsarLinks<DeckModel>();
 
   // Convert to entity
-  Flashcard toEntity() {
-    return Flashcard(
+  Card toEntity() {
+    return Card(
       id: cardId,
       front: front,
       back: back,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      deckId: deck.value?.deckId ?? '', // Get deckId from linked deck
       progress: StudyProgress(
         reviewCount: reviewCount,
         difficulty: difficulty,

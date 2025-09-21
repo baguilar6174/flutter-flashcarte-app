@@ -15,20 +15,20 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   const IsarLocalFlashCardsDatasourceImpl(this._isar);
 
   @override
-  Future<Either<Failure, String>> create(Flashcard flashcard) async {
+  Future<Either<Failure, String>> create(Card flashcard) async {
     try {
       return await _isar.writeTxn(() async {
         // Convert entity to model
         final model = FlashcardMapper.toModel(flashcard);
 
         // Set up deck relationship
-        await _linkToDeck(model, flashcard.deckId);
+        // TODO: implement
 
         // Save flashcard
-        await _isar.flashcardModels.put(model);
+        await _isar.cardModels.put(model);
 
         // Save relationships
-        await model.deck.save();
+        // TODO: implement
 
         return Right(flashcard.id);
       });
@@ -38,15 +38,9 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   }
 
   @override
-  Future<Either<Failure, List<Flashcard>>> getAll() async {
+  Future<Either<Failure, List<Card>>> getAll() async {
     try {
-      final models = await _isar.flashcardModels.where().findAll();
-
-      // Load relationships for all models
-      for (final model in models) {
-        await model.deck.load();
-      }
-
+      final models = await _isar.cardModels.where().findAll();
       final entities = FlashcardMapper.toEntityList(models);
       return Right(entities);
     } catch (e) {
@@ -55,17 +49,15 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   }
 
   @override
-  Future<Either<Failure, Flashcard>> getById(String id) async {
+  Future<Either<Failure, Card>> getById(String id) async {
     try {
-      final model = await _isar.flashcardModels
+      final model = await _isar.cardModels
           .where()
           .cardIdEqualTo(id)
           .findFirst();
       if (model == null) {
         return left(const NoDataFailure('Flashcard not found'));
       }
-      // Load relationships
-      await model.deck.load();
       final entity = FlashcardMapper.toEntity(model);
       return right(entity);
     } catch (e) {
@@ -74,11 +66,11 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> update(Flashcard flashcard) async {
+  Future<Either<Failure, Unit>> update(Card flashcard) async {
     try {
       return await _isar.writeTxn(() async {
         // Find existing model
-        final existingModel = await _isar.flashcardModels
+        final existingModel = await _isar.cardModels
             .where()
             .cardIdEqualTo(flashcard.id)
             .findFirst();
@@ -90,14 +82,9 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
         final updatedModel = FlashcardMapper.toModel(flashcard);
         updatedModel.id = existingModel.id; // Preserve database ID
 
-        // Update deck relationship if changed
-        if (flashcard.deckId != existingModel.deck.value?.deckId) {
-          await _linkToDeck(updatedModel, flashcard.deckId);
-        }
-
         // Save updated model
-        await _isar.flashcardModels.put(updatedModel);
-        await updatedModel.deck.save();
+        await _isar.cardModels.put(updatedModel);
+
         return Right(unit);
       });
     } catch (e) {
@@ -109,7 +96,7 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   Future<Either<Failure, Unit>> delete(String id) async {
     try {
       return await _isar.writeTxn(() async {
-        final model = await _isar.flashcardModels
+        final model = await _isar.cardModels
             .where()
             .cardIdEqualTo(id)
             .findFirst();
@@ -119,23 +106,12 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
         }
 
         // Delete the flashcard
-        await _isar.flashcardModels.delete(model.id);
+        await _isar.cardModels.delete(model.id);
 
         return Right(unit);
       });
     } catch (e) {
       return Left(_handleDatabaseError(e, 'delete flashcard'));
-    }
-  }
-
-  // Helper methods for relationship management
-  Future<void> _linkToDeck(FlashcardModel model, String deckId) async {
-    final deck = await _isar.deckModels
-        .where()
-        .deckIdEqualTo(deckId)
-        .findFirst();
-    if (deck != null) {
-      model.deck.value = deck;
     }
   }
 

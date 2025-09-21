@@ -5,7 +5,7 @@ import 'package:flutter_flashcarte_app/core/error/failure.dart';
 import 'package:flutter_flashcarte_app/core/usecase/usecase.dart';
 
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
-import 'package:flutter_flashcarte_app/features/cards/domain/repositories/flashcard_repository.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/repositories/cards_repository.dart';
 
 class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
   final FlashcardRepository _repo;
@@ -22,13 +22,12 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
 
     // Create entity with business logic
     final now = DateTime.now();
-    final flashcard = Flashcard(
+    final flashcard = Card(
       id: _generateId(),
       front: params.front.trim(),
       back: params.back.trim(),
       createdAt: now,
       updatedAt: now,
-      deckId: params.deckId,
       progress: const StudyProgress(
         reviewCount: 0,
         difficulty: 0.5,
