@@ -7,13 +7,13 @@ import 'package:flutter_flashcarte_app/core/usecase/usecase.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/repositories/cards_repository.dart';
 
-class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
-  final FlashcardRepository _repo;
+class CreateCard implements UseCase<String, CreateCardParams> {
+  final CardsRepository _repo;
 
-  const CreateFlashcard(this._repo);
+  const CreateCard(this._repo);
 
   @override
-  Future<Either<Failure, String>> call(CreateFlashcardParams params) async {
+  Future<Either<Failure, String>> call(CreateCardParams params) async {
     // Step 1: Validate input
     final validationResult = _validateInput(params);
     if (validationResult != null) {
@@ -22,7 +22,7 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
 
     // Create entity with business logic
     final now = DateTime.now();
-    final flashcard = Card(
+    final card = Card(
       id: _generateId(),
       front: params.front.trim(),
       back: params.back.trim(),
@@ -40,10 +40,10 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
     );
 
     // Step 3: Persist through repository
-    return await _repo.create(flashcard);
+    return await _repo.create(card);
   }
 
-  ValidationFailure? _validateInput(CreateFlashcardParams params) {
+  ValidationFailure? _validateInput(CreateCardParams params) {
     if (params.front.trim().isEmpty) {
       return const ValidationFailure('Front text cannot be empty');
     }
@@ -75,12 +75,12 @@ class CreateFlashcard implements UseCase<String, CreateFlashcardParams> {
 }
 
 // Input parameters as a dedicated class
-class CreateFlashcardParams extends Equatable {
+class CreateCardParams extends Equatable {
   final String front;
   final String back;
   final String deckId;
 
-  const CreateFlashcardParams({
+  const CreateCardParams({
     required this.front,
     required this.back,
     required this.deckId,

@@ -3,37 +3,35 @@ import 'package:fpdart/fpdart.dart';
 
 import 'package:flutter_flashcarte_app/core/error/failure.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/data/mappers/mappers.dart';
-import 'package:flutter_flashcarte_app/features/cards/data/models/models.dart';
+import 'package:flutter_flashcarte_app/features/cards/data/data.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/domain/datasource/flashcard_datasource.dart';
-import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
 
-class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
+class IsarCardsDatasourceImpl implements CardDataSource {
   final Isar _isar;
 
-  const IsarLocalFlashCardsDatasourceImpl(this._isar);
+  const IsarCardsDatasourceImpl(this._isar);
 
   @override
-  Future<Either<Failure, String>> create(Card flashcard) async {
+  Future<Either<Failure, String>> create(Card card) async {
     try {
       return await _isar.writeTxn(() async {
         // Convert entity to model
-        final model = FlashcardMapper.toModel(flashcard);
+        final model = CardMapper.toModel(card);
 
         // Set up deck relationship
         // TODO: implement
 
-        // Save flashcard
+        // Save card
         await _isar.cardModels.put(model);
 
         // Save relationships
         // TODO: implement
 
-        return Right(flashcard.id);
+        return Right(card.id);
       });
     } catch (e) {
-      return Left(_handleDatabaseError(e, 'create flashcard'));
+      return Left(handleDatabaseError(e, 'create card'));
     }
   }
 
@@ -41,10 +39,10 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
   Future<Either<Failure, List<Card>>> getAll() async {
     try {
       final models = await _isar.cardModels.where().findAll();
-      final entities = FlashcardMapper.toEntityList(models);
+      final entities = CardMapper.toEntityList(models);
       return Right(entities);
     } catch (e) {
-      return Left(_handleDatabaseError(e, 'get all flashcards'));
+      return Left(handleDatabaseError(e, 'get all cards'));
     }
   }
 
@@ -56,30 +54,30 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
           .cardIdEqualTo(id)
           .findFirst();
       if (model == null) {
-        return left(const NoDataFailure('Flashcard not found'));
+        return left(const NoDataFailure('Card not found'));
       }
-      final entity = FlashcardMapper.toEntity(model);
+      final entity = CardMapper.toEntity(model);
       return right(entity);
     } catch (e) {
-      return left(_handleDatabaseError(e, 'get flashcard by id'));
+      return left(handleDatabaseError(e, 'get card by id'));
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> update(Card flashcard) async {
+  Future<Either<Failure, Unit>> update(Card card) async {
     try {
       return await _isar.writeTxn(() async {
         // Find existing model
         final existingModel = await _isar.cardModels
             .where()
-            .cardIdEqualTo(flashcard.id)
+            .cardIdEqualTo(card.id)
             .findFirst();
 
         if (existingModel == null) {
-          return left(const NoDataFailure('Flashcard not found for update'));
+          return left(const NoDataFailure('Card not found for update'));
         }
         // Update model with new data
-        final updatedModel = FlashcardMapper.toModel(flashcard);
+        final updatedModel = CardMapper.toModel(card);
         updatedModel.id = existingModel.id; // Preserve database ID
 
         // Save updated model
@@ -88,7 +86,7 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
         return Right(unit);
       });
     } catch (e) {
-      return Left(_handleDatabaseError(e, 'update flashcard'));
+      return Left(handleDatabaseError(e, 'update card'));
     }
   }
 
@@ -102,23 +100,16 @@ class IsarLocalFlashCardsDatasourceImpl implements FlashcardDataSource {
             .findFirst();
 
         if (model == null) {
-          return left(const NoDataFailure('Flashcard not found for deletion'));
+          return left(const NoDataFailure('Card not found for deletion'));
         }
 
-        // Delete the flashcard
+        // Delete the card
         await _isar.cardModels.delete(model.id);
 
         return Right(unit);
       });
     } catch (e) {
-      return Left(_handleDatabaseError(e, 'delete flashcard'));
+      return Left(handleDatabaseError(e, 'delete card'));
     }
-  }
-
-  Failure _handleDatabaseError(dynamic error, String operation) {
-    if (error is IsarError) {
-      return DatabaseFailure('Isar error during $operation: ${error.message}');
-    }
-    return DatabaseFailure('Unexpected error during $operation: $error');
   }
 }

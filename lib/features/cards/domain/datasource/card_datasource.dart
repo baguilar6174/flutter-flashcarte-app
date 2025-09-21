@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:flutter_flashcarte_app/core/error/failure.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-abstract interface class FlashcardDataSource {
+abstract interface class CardDataSource {
   Future<Either<Failure, String>> create(Card data);
   Future<Either<Failure, List<Card>>> getAll();
   Future<Either<Failure, Card>> getById(String id);

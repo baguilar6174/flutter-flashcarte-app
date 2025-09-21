@@ -1,7 +1,7 @@
 import 'package:flutter_flashcarte_app/features/cards/data/models/models.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-class FlashcardMapper {
+class CardMapper {
   /// Converts domain entity to data model for storage
   static CardModel toModel(Card entity) {
     final model = CardModel()

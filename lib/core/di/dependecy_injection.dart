@@ -5,8 +5,7 @@ import 'package:flutter_flashcarte_app/core/services/isar.dart';
 
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/domain/repositories/cards_repository.dart';
-import 'package:flutter_flashcarte_app/features/cards/domain/usecases/usecases.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -25,7 +24,7 @@ Future<void> _initIsar() async {
 
 void _useCases() {
   // Cards
-  sl.registerLazySingleton(() => CreateFlashcard(sl<FlashcardRepository>()));
+  sl.registerLazySingleton(() => CreateCard(sl<CardsRepository>()));
 }
 
 void _cubit() {
