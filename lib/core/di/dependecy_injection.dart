@@ -6,13 +6,14 @@ import 'package:flutter_flashcarte_app/core/services/isar.dart';
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
 import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
+import 'package:flutter_flashcarte_app/features/cards/data/data.dart';
 
 GetIt sl = GetIt.instance;
 
 Future<void> serviceLocator() async {
   await _initIsar();
-  // dataSources
-  // repositories
+  _dataSources();
+  _repositories();
   _useCases();
   _cubit();
 }
@@ -22,9 +23,38 @@ Future<void> _initIsar() async {
   sl.registerSingleton<Isar>(isar);
 }
 
+/// Register repositories
+void _repositories() {
+  /// Decks
+  sl.registerLazySingleton<DecksRepository>(
+    () => DecksRepositoryImpl(sl<DecksDataSource>()),
+  );
+
+  /// Cards
+  sl.registerLazySingleton<CardsRepository>(
+    () => CardsRepositoryImpl(sl<CardDataSource>()),
+  );
+}
+
+/// Register dataSources
+void _dataSources() {
+  /// Decks
+  sl.registerLazySingleton<DecksDataSource>(
+    () => IsarDecksDatasourceImpl(sl<Isar>()),
+  );
+
+  /// Cards
+  sl.registerLazySingleton<CardDataSource>(
+    () => IsarCardsDatasourceImpl(sl<Isar>()),
+  );
+}
+
 void _useCases() {
   // Cards
   sl.registerLazySingleton(() => CreateCard(sl<CardsRepository>()));
+
+  // Decks
+  sl.registerLazySingleton(() => GetAllDecks(sl<DecksRepository>()));
 }
 
 void _cubit() {
