@@ -5,8 +5,9 @@ import 'package:flutter_flashcarte_app/core/services/isar.dart';
 
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
 import 'package:flutter_flashcarte_app/features/cards/data/data.dart';
+import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
+import 'package:flutter_flashcarte_app/features/cards/presentation/presentation.dart';
 
 GetIt sl = GetIt.instance;
 
@@ -60,4 +61,7 @@ void _useCases() {
 void _cubit() {
   /// Profile
   sl.registerFactory(() => PreferencesCubit());
+
+  /// Decks
+  sl.registerFactory(() => DecksCubit(getAllDecks: sl<GetAllDecks>()));
 }

@@ -168,6 +168,12 @@ abstract class Strings {
   /// In en, this message translates to:
   /// **'Choose Language'**
   String get chooseLanguage;
+
+  /// No description provided for @errorNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get errorNoData;
 }
 
 class _StringsDelegate extends LocalizationsDelegate<Strings> {

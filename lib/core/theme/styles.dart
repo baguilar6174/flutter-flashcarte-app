@@ -11,6 +11,7 @@ ThemeData themeLight(BuildContext context) => ThemeData(
   colorScheme: const ColorScheme.light().copyWith(
     primary: Palette.primary,
     surface: Palette.background,
+    onSurface: Palette.primary,
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: Palette.primary,
@@ -28,7 +29,10 @@ ThemeData themeDark(BuildContext context) => ThemeData(
   primaryColor: Palette.primary,
   cardColor: Palette.backgroundDark,
   scaffoldBackgroundColor: Palette.backgroundDark,
-  colorScheme: const ColorScheme.dark().copyWith(primary: Palette.primary),
+  colorScheme: const ColorScheme.dark().copyWith(
+    primary: Palette.primary,
+    onSurface: Palette.primary,
+  ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: Palette.primary,
     unselectedItemColor: Palette.shadowDark,

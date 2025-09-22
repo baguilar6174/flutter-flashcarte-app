@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_flashcarte_app/core/localization/generated/strings.dart';
+import 'package:flutter_flashcarte_app/core/core.dart';
+import 'package:flutter_flashcarte_app/features/cards/presentation/presentation.dart';
 
 class AddPage extends StatelessWidget {
   const AddPage({super.key});
@@ -8,10 +10,28 @@ class AddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          Strings.of(context)!.homeTitle,
-          style: Theme.of(context).textTheme.headlineMedium,
+      body: RefreshIndicator(
+        onRefresh: () => context.read<DecksCubit>().getAll(),
+        child: BlocBuilder<DecksCubit, DecksState>(
+          builder: (_, state) {
+            if (state.isLoading) return const Center(child: Loading());
+            if (state.error != null) {
+              return Center(child: Empty(errorMessage: state.error));
+            }
+            final data = state.decks;
+            if (data.isEmpty) return const Center(child: Empty());
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: state.decks.length,
+              padding: EdgeInsets.all(Dimens.space16),
+              itemBuilder: (_, index) {
+                final deck = state.decks[index];
+                return index < (state.decks.length)
+                    ? DeckItem(deck: deck)
+                    : Loading();
+              },
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

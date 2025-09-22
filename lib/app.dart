@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flashcarte_app/features/cards/presentation/presentation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flutter_flashcarte_app/core/router/app_router.dart';
-import 'package:flutter_flashcarte_app/core/theme/theme.dart';
-import 'package:flutter_flashcarte_app/core/localization/localization.dart';
-import 'package:flutter_flashcarte_app/core/di/dependecy_injection.dart';
+import 'package:flutter_flashcarte_app/core/core.dart';
 
 import 'package:flutter_flashcarte_app/features/profile/presentation/cubit/cubit.dart';
 
@@ -26,6 +24,7 @@ class App extends StatelessWidget {
         BlocProvider<PreferencesCubit>(
           create: (context) => sl<PreferencesCubit>()..getActiveTheme(),
         ),
+        BlocProvider(create: (_) => sl<DecksCubit>()..getAll()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 667),

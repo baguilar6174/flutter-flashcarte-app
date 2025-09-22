@@ -43,4 +43,7 @@ class StringsEn extends Strings {
 
   @override
   String get chooseLanguage => 'Choose Language';
+
+  @override
+  String get errorNoData => 'No data';
 }
