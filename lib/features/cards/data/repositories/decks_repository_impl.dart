@@ -10,7 +10,7 @@ class DecksRepositoryImpl implements DecksRepository {
   const DecksRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<Failure, String>> create(Deck data) async {
+  Future<Either<Failure, Deck>> create(Deck data) async {
     return await _dataSource.create(data);
   }
 

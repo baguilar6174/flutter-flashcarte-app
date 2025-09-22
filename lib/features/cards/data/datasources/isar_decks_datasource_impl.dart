@@ -13,9 +13,17 @@ class IsarDecksDatasourceImpl implements DecksDataSource {
   const IsarDecksDatasourceImpl(this._isar);
 
   @override
-  Future<Either<Failure, String>> create(Deck data) async {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Either<Failure, Deck>> create(Deck data) async {
+    try {
+      final model = DeckMapper.toModel(data);
+
+      return await _isar.writeTxn(() async {
+        await _isar.deckModels.put(model);
+        return Right(data);
+      });
+    } catch (e) {
+      return Left(handleDatabaseError(e, 'create deck'));
+    }
   }
 
   @override

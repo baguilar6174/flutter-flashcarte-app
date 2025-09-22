@@ -56,6 +56,7 @@ void _useCases() {
 
   // Decks
   sl.registerLazySingleton(() => GetAllDecks(sl<DecksRepository>()));
+  sl.registerLazySingleton(() => CreateDeck(sl<DecksRepository>()));
 }
 
 void _cubit() {
@@ -63,5 +64,10 @@ void _cubit() {
   sl.registerFactory(() => PreferencesCubit());
 
   /// Decks
-  sl.registerFactory(() => DecksCubit(getAllDecks: sl<GetAllDecks>()));
+  sl.registerFactory(
+    () => DecksCubit(
+      getAllDecks: sl<GetAllDecks>(),
+      createDeck: sl<CreateDeck>(),
+    ),
+  );
 }

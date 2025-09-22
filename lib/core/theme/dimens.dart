@@ -17,7 +17,16 @@ class Dimens {
   static double space5 = 5.w;
   static double space6 = 6.w;
   static double space8 = 8.w;
+  static double space10 = 10.w;
   static double space12 = 12.w;
   static double space16 = 16.w;
+
+  static double spaceV10 = 10.h;
+  static double spaceV12 = 12.h;
+  static double spaceV16 = 16.h;
+  static double spaceV80 = 80.h;
+
+  static double borderRadius = 10;
+
   // other sizes
 }

@@ -10,8 +10,10 @@ part 'decks_state.dart';
 
 class DecksCubit extends Cubit<DecksState> {
   final GetAllDecks getAllDecks;
+  final CreateDeck createDeck;
 
-  DecksCubit({required this.getAllDecks}) : super(DecksState());
+  DecksCubit({required this.getAllDecks, required this.createDeck})
+    : super(DecksState());
 
   Future<void> getAll() async {
     emit(state.copyWith(isLoading: true, clearError: true));
@@ -40,6 +42,34 @@ class DecksCubit extends Cubit<DecksState> {
       },
       (data) =>
           emit(state.copyWith(isLoading: false, decks: data, clearError: true)),
+    );
+  }
+
+  Future<void> create(String name, String? description) async {
+    emit(state.copyWith(isLoading: true, clearError: true));
+
+    final result = await createDeck.call(
+      CreateDeckParams(name: name, description: description),
+    );
+
+    result.fold(
+      (failure) {
+        if (failure is DatabaseFailure) {
+          emit(
+            state.copyWith(
+              isLoading: false,
+              error: failure.message ?? 'Error creating deck',
+            ),
+          );
+        }
+      },
+      (data) => emit(
+        state.copyWith(
+          isLoading: false,
+          clearError: true,
+          decks: [...state.decks, data],
+        ),
+      ),
     );
   }
 }

@@ -10,32 +10,37 @@ class AddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () => context.read<DecksCubit>().getAll(),
-        child: BlocBuilder<DecksCubit, DecksState>(
-          builder: (_, state) {
-            if (state.isLoading) return const Center(child: Loading());
-            if (state.error != null) {
-              return Center(child: Empty(errorMessage: state.error));
-            }
-            final data = state.decks;
-            if (data.isEmpty) return const Center(child: Empty());
-            return ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: state.decks.length,
-              padding: EdgeInsets.all(Dimens.space16),
-              itemBuilder: (_, index) {
-                final deck = state.decks[index];
-                return index < (state.decks.length)
-                    ? DeckItem(deck: deck)
-                    : Loading();
-              },
-            );
-          },
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () => context.read<DecksCubit>().getAll(),
+          child: BlocBuilder<DecksCubit, DecksState>(
+            builder: (_, state) {
+              if (state.isLoading) return const Center(child: Loading());
+              if (state.error != null) {
+                return Center(child: Empty(errorMessage: state.error));
+              }
+              final data = state.decks;
+              if (data.isEmpty) return const Center(child: Empty());
+              return ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: state.decks.length,
+                padding: EdgeInsets.all(Dimens.space16),
+                itemBuilder: (_, index) {
+                  final deck = state.decks[index];
+                  return index < (state.decks.length)
+                      ? DeckItem(deck: deck)
+                      : Loading();
+                },
+              );
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          final cubit = context.read<DecksCubit>();
+          await cubit.create('test', 'test description');
+        },
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
       ),

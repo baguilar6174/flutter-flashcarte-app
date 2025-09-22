@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_flashcarte_app/core/core.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
 class DeckItem extends StatelessWidget {
@@ -10,11 +11,7 @@ class DeckItem extends StatelessWidget {
   const DeckItem({
     super.key,
     required this.deck,
-    this.gradientColors = const [
-      Color(0xFF7B68EE), // Medium slate blue
-      Color(0xFF9370DB), // Medium purple
-      Color(0xFF4B0082), // Indigo
-    ],
+    this.gradientColors = const [Color(0xFFFF79C6), Color(0xFFB63E96)],
     this.onTap,
   });
 
@@ -23,10 +20,11 @@ class DeckItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 280,
-        height: 120,
+        width: double.infinity,
+        height: Dimens.spaceV80,
+        margin: EdgeInsets.symmetric(vertical: Dimens.space10),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(Dimens.borderRadius),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -35,7 +33,7 @@ class DeckItem extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: gradientColors.first.withValues(alpha: 0.3),
-              blurRadius: 12,
+              blurRadius: Dimens.borderRadius,
               offset: const Offset(0, 6),
             ),
           ],
@@ -44,36 +42,43 @@ class DeckItem extends StatelessWidget {
           children: [
             // Main content
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Title
-                  Text(
-                    deck.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Text(
+                      deck.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ),
                   // Bottom section with subtitle and value
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+                      horizontal: 20,
+                      vertical: 10,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(Dimens.borderRadius),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "subtitle",
+                          "Words",
                           style: const TextStyle(
                             color: Color(0xFF6B7280),
                             fontSize: 16,
@@ -81,7 +86,7 @@ class DeckItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "value",
+                          deck.cardCount.toString(),
                           style: const TextStyle(
                             color: Color(0xFF1F2937),
                             fontSize: 24,
@@ -103,11 +108,11 @@ class DeckItem extends StatelessWidget {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: Colors.white.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
-                  Icons.trending_up,
+                  Icons.arrow_outward_outlined,
                   color: Colors.white,
                   size: 18,
                 ),
