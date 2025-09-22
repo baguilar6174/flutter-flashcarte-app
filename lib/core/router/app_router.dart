@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flashcarte_app/features/profile/presentation/pages/pages.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_flashcarte_app/features/cards/presentation/pages/pages.dart';
-import 'package:flutter_flashcarte_app/core/router/home_page.dart';
-import 'package:flutter_flashcarte_app/core/router/splash_page.dart';
+import 'package:flutter_flashcarte_app/features/profile/presentation/pages/pages.dart';
+
+import 'package:flutter_flashcarte_app/features/cards/presentation/presentation.dart';
+
+import 'package:flutter_flashcarte_app/core/core.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
@@ -13,7 +15,8 @@ enum Routes {
   root("/"),
   splashScreen("/splashscreen"),
   home("/home"),
-  add("/add"),
+  decks("/decks"),
+  deckDetail("/detail"),
   profile("/profile");
 
   const Routes(this.path);
@@ -34,9 +37,20 @@ final appRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: Routes.add.path,
-              name: Routes.add.name,
-              builder: (_, __) => const AddPage(),
+              path: Routes.decks.path,
+              name: Routes.decks.name,
+              builder: (_, __) => const DecksPage(),
+              routes: [
+                GoRoute(
+                  path: Routes.deckDetail.path,
+                  name: Routes.deckDetail.name,
+                  builder: (context, state) {
+                    String id = state.uri.queryParameters['id']!;
+                    context.read<DecksCubit>().getById(id);
+                    return DeckDetailPage(deckId: id);
+                  },
+                ),
+              ],
             ),
           ],
         ),

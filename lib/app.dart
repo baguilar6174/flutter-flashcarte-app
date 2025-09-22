@@ -25,6 +25,7 @@ class App extends StatelessWidget {
           create: (context) => sl<PreferencesCubit>()..getActiveTheme(),
         ),
         BlocProvider(create: (_) => sl<DecksCubit>()..getAll()),
+        BlocProvider(create: (_) => sl<CardsCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 667),

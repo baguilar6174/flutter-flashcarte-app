@@ -20,6 +20,9 @@ class DeckMapper {
       description: model.description,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
+      cards: model.cards.isNotEmpty
+          ? model.cards.map((cardModel) => cardModel.toEntity()).toList()
+          : null,
     );
   }
 

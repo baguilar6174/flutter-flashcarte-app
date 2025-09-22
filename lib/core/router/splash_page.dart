@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 2), () {
-      context.go(Routes.add.path);
+      context.go(Routes.decks.path);
     });
   }
 

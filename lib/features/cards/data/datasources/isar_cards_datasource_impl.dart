@@ -19,14 +19,26 @@ class IsarCardsDatasourceImpl implements CardDataSource {
         // Convert entity to model
         final model = CardMapper.toModel(card);
 
-        // Set up deck relationship
-        // TODO: implement
-
-        // Save card
+        // Save card first to get database ID
         await _isar.cardModels.put(model);
 
-        // Save relationships
-        // TODO: implement
+        // Set up deck relationships if deckIds are provided
+        if (card.deckIds != null && card.deckIds!.isNotEmpty) {
+          for (final deckId in card.deckIds!) {
+            // Find the deck by deckId
+            final deck = await _isar.deckModels
+                .where()
+                .deckIdEqualTo(deckId)
+                .findFirst();
+
+            if (deck != null) {
+              // Link card to deck
+              model.decks.add(deck);
+            }
+          }
+          // Save the relationships
+          await model.decks.save();
+        }
 
         return Right(card.id);
       });
@@ -39,6 +51,10 @@ class IsarCardsDatasourceImpl implements CardDataSource {
   Future<Either<Failure, List<Card>>> getAll() async {
     try {
       final models = await _isar.cardModels.where().findAll();
+      // Load deck relationships for each card
+      for (final model in models) {
+        await model.decks.load();
+      }
       final entities = CardMapper.toEntityList(models);
       return Right(entities);
     } catch (e) {
@@ -56,6 +72,8 @@ class IsarCardsDatasourceImpl implements CardDataSource {
       if (model == null) {
         return left(const NoDataFailure('Card not found'));
       }
+      // Load deck relationships
+      await model.decks.load();
       final entity = CardMapper.toEntity(model);
       return right(entity);
     } catch (e) {
@@ -76,12 +94,34 @@ class IsarCardsDatasourceImpl implements CardDataSource {
         if (existingModel == null) {
           return left(const NoDataFailure('Card not found for update'));
         }
+
+        // Load existing relationships
+        await existingModel.decks.load();
+
         // Update model with new data
         final updatedModel = CardMapper.toModel(card);
         updatedModel.id = existingModel.id; // Preserve database ID
 
         // Save updated model
         await _isar.cardModels.put(updatedModel);
+
+        // Update deck relationships if provided
+        if (card.deckIds != null) {
+          // Clear existing relationships
+          updatedModel.decks.clear();
+
+          // Add new relationships
+          for (final deckId in card.deckIds!) {
+            final deck = await _isar.deckModels
+                .where()
+                .deckIdEqualTo(deckId)
+                .findFirst();
+            if (deck != null) {
+              updatedModel.decks.add(deck);
+            }
+          }
+          await updatedModel.decks.save();
+        }
 
         return Right(unit);
       });

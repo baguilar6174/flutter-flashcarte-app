@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:flutter_flashcarte_app/core/core.dart';
 import 'package:flutter_flashcarte_app/features/cards/presentation/presentation.dart';
 
-class AddPage extends StatelessWidget {
-  const AddPage({super.key});
+class DecksPage extends StatelessWidget {
+  const DecksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,15 @@ class AddPage extends StatelessWidget {
                 itemBuilder: (_, index) {
                   final deck = state.decks[index];
                   return index < (state.decks.length)
-                      ? DeckItem(deck: deck)
+                      ? DeckItem(
+                          deck: deck,
+                          onTap: () {
+                            context.pushNamed(
+                              Routes.deckDetail.name,
+                              queryParameters: {'id': deck.id},
+                            );
+                          },
+                        )
                       : Loading();
                 },
               );

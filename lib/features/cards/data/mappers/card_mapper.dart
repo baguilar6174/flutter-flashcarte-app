@@ -29,6 +29,9 @@ class CardMapper {
       back: model.back,
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
+      deckIds: model.decks.isNotEmpty
+          ? model.decks.map((deck) => deck.deckId).toList()
+          : null,
       progress: StudyProgress(
         reviewCount: model.reviewCount,
         difficulty: model.difficulty,

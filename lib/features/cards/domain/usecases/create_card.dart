@@ -14,13 +14,11 @@ class CreateCard implements UseCase<String, CreateCardParams> {
 
   @override
   Future<Either<Failure, String>> call(CreateCardParams params) async {
-    // Step 1: Validate input
     final validationResult = _validateInput(params);
     if (validationResult != null) {
       return left(validationResult);
     }
 
-    // Create entity with business logic
     final now = DateTime.now();
     final card = Card(
       id: _generateId(),
@@ -28,6 +26,7 @@ class CreateCard implements UseCase<String, CreateCardParams> {
       back: params.back.trim(),
       createdAt: now,
       updatedAt: now,
+      deckIds: [params.deckId], // Associate card with deck
       progress: const StudyProgress(
         reviewCount: 0,
         difficulty: 0.5,
@@ -39,7 +38,6 @@ class CreateCard implements UseCase<String, CreateCardParams> {
       ),
     );
 
-    // Step 3: Persist through repository
     return await _repo.create(card);
   }
 

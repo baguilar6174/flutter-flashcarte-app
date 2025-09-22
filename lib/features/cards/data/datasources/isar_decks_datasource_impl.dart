@@ -39,8 +39,21 @@ class IsarDecksDatasourceImpl implements DecksDataSource {
 
   @override
   Future<Either<Failure, Deck>> getById(String id) async {
-    // TODO: implement getById
-    throw UnimplementedError();
+    try {
+      final model = await _isar.deckModels
+          .where()
+          .deckIdEqualTo(id)
+          .findFirst();
+      if (model == null) {
+        return Left(const NoDataFailure('Deck not found'));
+      }
+      // Load card relationships
+      await model.cards.load();
+      final entity = DeckMapper.toEntity(model);
+      return Right(entity);
+    } catch (e) {
+      return Left(handleDatabaseError(e, 'get deck by id'));
+    }
   }
 
   @override

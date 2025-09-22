@@ -32,9 +32,9 @@ class DeckItem extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: gradientColors.first.withValues(alpha: 0.3),
+              color: gradientColors.first.withValues(alpha: 0.2),
               blurRadius: Dimens.borderRadius,
-              offset: const Offset(0, 6),
+              offset: const Offset(0, 1),
             ),
           ],
         ),
@@ -71,6 +71,7 @@ class DeckItem extends StatelessWidget {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
+                      // color: Color(0xFF161b22),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(Dimens.borderRadius),
                     ),

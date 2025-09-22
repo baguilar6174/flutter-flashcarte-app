@@ -53,9 +53,11 @@ void _dataSources() {
 void _useCases() {
   // Cards
   sl.registerLazySingleton(() => CreateCard(sl<CardsRepository>()));
+  sl.registerLazySingleton(() => GetAllCards(sl<CardsRepository>()));
 
   // Decks
   sl.registerLazySingleton(() => GetAllDecks(sl<DecksRepository>()));
+  sl.registerLazySingleton(() => GetDeckById(sl<DecksRepository>()));
   sl.registerLazySingleton(() => CreateDeck(sl<DecksRepository>()));
 }
 
@@ -63,10 +65,19 @@ void _cubit() {
   /// Profile
   sl.registerFactory(() => PreferencesCubit());
 
+  /// Cards
+  sl.registerFactory(
+    () => CardsCubit(
+      getAllCards: sl<GetAllCards>(),
+      createCard: sl<CreateCard>(),
+    ),
+  );
+
   /// Decks
   sl.registerFactory(
     () => DecksCubit(
       getAllDecks: sl<GetAllDecks>(),
+      getDeckById: sl<GetDeckById>(),
       createDeck: sl<CreateDeck>(),
     ),
   );
