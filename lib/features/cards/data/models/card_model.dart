@@ -12,8 +12,11 @@ class CardModel {
   @Index(unique: true)
   late String cardId;
 
-  late String front;
-  late String back;
+  late String word;
+  late String pronunciation;
+  late String definition;
+  late String example;
+
   late DateTime createdAt;
   late DateTime updatedAt;
 
@@ -31,11 +34,13 @@ class CardModel {
   final decks = IsarLinks<DeckModel>();
 
   // Convert to entity
-  Card toEntity() {
-    return Card(
+  CardEntity toEntity() {
+    return CardEntity(
       id: cardId,
-      front: front,
-      back: back,
+      word: word,
+      pronunciation: pronunciation,
+      definition: definition,
+      example: example,
       createdAt: createdAt,
       updatedAt: updatedAt,
       progress: StudyProgress(

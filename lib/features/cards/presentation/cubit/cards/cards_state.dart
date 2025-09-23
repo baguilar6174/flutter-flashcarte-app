@@ -2,14 +2,14 @@ part of 'cards_cubit.dart';
 
 class CardsState extends Equatable {
   final bool isLoading;
-  final List<Card> cards;
+  final List<CardEntity> cards;
   final String? error;
 
   const CardsState({this.isLoading = false, this.cards = const [], this.error});
 
   CardsState copyWith({
     bool? isLoading,
-    List<Card>? cards,
+    List<CardEntity>? cards,
     String? error,
     bool clearError = false,
   }) {

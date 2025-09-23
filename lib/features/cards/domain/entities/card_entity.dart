@@ -2,10 +2,16 @@ import 'package:equatable/equatable.dart';
 
 import 'package:flutter_flashcarte_app/features/cards/domain/entities/entities.dart';
 
-class Card extends Equatable {
+class CardEntity extends Equatable {
   final String id;
-  final String front;
-  final String back;
+
+  // Front
+  final String word;
+  final String pronunciation;
+  // Back
+  final String definition;
+  final String example;
+
   final DateTime createdAt;
   final DateTime updatedAt;
   final StudyProgress progress;
@@ -13,10 +19,12 @@ class Card extends Equatable {
   /// MANY-TO-MANY RELATIONSHIP: One card can belong to many decks
   final List<String>? deckIds;
 
-  const Card({
+  const CardEntity({
     required this.id,
-    required this.front,
-    required this.back,
+    required this.word,
+    required this.pronunciation,
+    required this.definition,
+    required this.example,
     required this.createdAt,
     required this.updatedAt,
     required this.progress,
@@ -39,7 +47,7 @@ class Card extends Equatable {
         progress.nextReviewDate!.isAtSameMomentAs(now);
   }
 
-  Card markAsReviewed({
+  CardEntity markAsReviewed({
     required bool wasCorrect,
     required DateTime reviewedAt,
   }) {
@@ -51,20 +59,24 @@ class Card extends Equatable {
     return copyWith(progress: newProgress, updatedAt: reviewedAt);
   }
 
-  Card copyWith({
+  CardEntity copyWith({
     String? id,
-    String? front,
-    String? back,
+    String? word,
+    String? pronunciation,
+    String? definition,
+    String? example,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? deckId,
     StudyProgress? progress,
     List<String>? deckIds,
   }) {
-    return Card(
+    return CardEntity(
       id: id ?? this.id,
-      front: front ?? this.front,
-      back: back ?? this.back,
+      word: word ?? this.word,
+      pronunciation: pronunciation ?? this.pronunciation,
+      definition: definition ?? this.definition,
+      example: example ?? this.example,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       progress: progress ?? this.progress,
@@ -75,8 +87,10 @@ class Card extends Equatable {
   @override
   List<Object?> get props => [
     id,
-    front,
-    back,
+    word,
+    pronunciation,
+    definition,
+    example,
     createdAt,
     updatedAt,
     progress,

@@ -10,7 +10,7 @@ class CardsRepositoryImpl implements CardsRepository {
   const CardsRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<Failure, String>> create(Card data) async {
+  Future<Either<Failure, String>> create(CardEntity data) async {
     return await _dataSource.create(data);
   }
 
@@ -20,7 +20,7 @@ class CardsRepositoryImpl implements CardsRepository {
   }
 
   @override
-  Future<Either<Failure, List<Card>>> getAll() async {
+  Future<Either<Failure, List<CardEntity>>> getAll() async {
     final response = await _dataSource.getAll();
     return response.fold((failure) => Left(failure), (response) {
       if (response.isEmpty) return Left(NoDataFailure("No data"));
@@ -29,7 +29,7 @@ class CardsRepositoryImpl implements CardsRepository {
   }
 
   @override
-  Future<Either<Failure, Card>> getById(String id) async {
+  Future<Either<Failure, CardEntity>> getById(String id) async {
     final response = await _dataSource.getById(id);
     return response.fold(
       (failure) => Left(failure),
@@ -38,7 +38,7 @@ class CardsRepositoryImpl implements CardsRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> update(Card data) async {
+  Future<Either<Failure, Unit>> update(CardEntity data) async {
     return await _dataSource.update(data);
   }
 }

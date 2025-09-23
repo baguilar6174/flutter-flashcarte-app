@@ -20,10 +20,12 @@ class CreateCard implements UseCase<String, CreateCardParams> {
     }
 
     final now = DateTime.now();
-    final card = Card(
+    final card = CardEntity(
       id: _generateId(),
-      front: params.front.trim(),
-      back: params.back.trim(),
+      word: params.word.trim(),
+      pronunciation: params.pronunciation.trim(),
+      definition: params.definition.trim(),
+      example: params.example.trim(),
       createdAt: now,
       updatedAt: now,
       deckIds: [params.deckId], // Associate card with deck
@@ -42,26 +44,34 @@ class CreateCard implements UseCase<String, CreateCardParams> {
   }
 
   ValidationFailure? _validateInput(CreateCardParams params) {
-    if (params.front.trim().isEmpty) {
-      return const ValidationFailure('Front text cannot be empty');
+    if (params.word.trim().isEmpty) {
+      return const ValidationFailure('Word cannot be empty');
     }
 
-    if (params.back.trim().isEmpty) {
-      return const ValidationFailure('Back text cannot be empty');
+    if (params.pronunciation.trim().isEmpty) {
+      return const ValidationFailure('Pronunciation cannot be empty');
+    }
+
+    if (params.definition.trim().isEmpty) {
+      return const ValidationFailure('Definition cannot be empty');
+    }
+
+    if (params.example.trim().isEmpty) {
+      return const ValidationFailure('Example cannot be empty');
     }
 
     if (params.deckId.trim().isEmpty) {
       return const ValidationFailure('Deck ID is required');
     }
 
-    if (params.front.trim().length > 500) {
+    if (params.definition.trim().length > 500) {
       return const ValidationFailure(
-        'Front text too long (max 500 characters)',
+        'Definition too long (max 500 characters)',
       );
     }
 
-    if (params.back.trim().length > 500) {
-      return const ValidationFailure('Back text too long (max 500 characters)');
+    if (params.example.trim().length > 500) {
+      return const ValidationFailure('Example too long (max 500 characters)');
     }
 
     return null; // No validation errors
@@ -74,16 +84,20 @@ class CreateCard implements UseCase<String, CreateCardParams> {
 
 // Input parameters as a dedicated class
 class CreateCardParams extends Equatable {
-  final String front;
-  final String back;
+  final String word;
+  final String pronunciation;
+  final String definition;
+  final String example;
   final String deckId;
 
   const CreateCardParams({
-    required this.front,
-    required this.back,
+    required this.word,
+    required this.pronunciation,
+    required this.definition,
+    required this.example,
     required this.deckId,
   });
 
   @override
-  List<Object?> get props => [front, back, deckId];
+  List<Object?> get props => [word, pronunciation, definition, example, deckId];
 }

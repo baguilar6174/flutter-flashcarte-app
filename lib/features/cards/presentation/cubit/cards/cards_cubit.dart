@@ -45,11 +45,23 @@ class CardsCubit extends Cubit<CardsState> {
     );
   }
 
-  Future<void> create(String front, String back, String deckId) async {
+  Future<void> create(
+    String word,
+    String pronunciation,
+    String definition,
+    String example,
+    String deckId,
+  ) async {
     emit(state.copyWith(isLoading: true, clearError: true));
 
     final result = await createCard.call(
-      CreateCardParams(front: front, back: back, deckId: deckId),
+      CreateCardParams(
+        word: word,
+        pronunciation: pronunciation,
+        definition: definition,
+        example: example,
+        deckId: deckId,
+      ),
     );
 
     result.fold(

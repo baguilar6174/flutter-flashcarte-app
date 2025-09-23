@@ -13,7 +13,7 @@ class IsarCardsDatasourceImpl implements CardDataSource {
   const IsarCardsDatasourceImpl(this._isar);
 
   @override
-  Future<Either<Failure, String>> create(Card card) async {
+  Future<Either<Failure, String>> create(CardEntity card) async {
     try {
       return await _isar.writeTxn(() async {
         // Convert entity to model
@@ -48,7 +48,7 @@ class IsarCardsDatasourceImpl implements CardDataSource {
   }
 
   @override
-  Future<Either<Failure, List<Card>>> getAll() async {
+  Future<Either<Failure, List<CardEntity>>> getAll() async {
     try {
       final models = await _isar.cardModels.where().findAll();
       // Load deck relationships for each card
@@ -63,7 +63,7 @@ class IsarCardsDatasourceImpl implements CardDataSource {
   }
 
   @override
-  Future<Either<Failure, Card>> getById(String id) async {
+  Future<Either<Failure, CardEntity>> getById(String id) async {
     try {
       final model = await _isar.cardModels
           .where()
@@ -82,7 +82,7 @@ class IsarCardsDatasourceImpl implements CardDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> update(Card card) async {
+  Future<Either<Failure, Unit>> update(CardEntity card) async {
     try {
       return await _isar.writeTxn(() async {
         // Find existing model

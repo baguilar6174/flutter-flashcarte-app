@@ -11,7 +11,7 @@ class Deck extends Equatable {
   final DateTime updatedAt;
 
   /// MANY-TO-MANY RELATIONSHIP: One deck can contain many cards
-  final List<Card>? cards;
+  final List<CardEntity>? cards;
 
   const Deck({
     required this.id,
@@ -28,7 +28,7 @@ class Deck extends Equatable {
     String? description,
     DateTime? createdAt,
     DateTime? updatedAt,
-    List<Card>? cards,
+    List<CardEntity>? cards,
   }) {
     return Deck(
       id: id ?? this.id,
