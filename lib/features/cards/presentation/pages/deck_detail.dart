@@ -26,20 +26,20 @@ class DeckDetailPage extends StatelessWidget {
               },
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              final cubit = context.read<CardsCubit>();
-              await cubit.create(
-                'word',
-                'pronunciation',
-                'definition',
-                'example',
-                deckId,
-              );
-            },
-            shape: const CircleBorder(),
-            child: const Icon(Icons.add),
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () async {
+          //     final cubit = context.read<CardsCubit>();
+          //     await cubit.create(
+          //       'word',
+          //       'pronunciation',
+          //       'definition',
+          //       'example',
+          //       deckId,
+          //     );
+          //   },
+          //   shape: const CircleBorder(),
+          //   child: const Icon(Icons.add),
+          // ),
         );
       },
     );

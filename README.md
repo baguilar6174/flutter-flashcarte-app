@@ -55,6 +55,7 @@ lib/
   <tr>
     <td align="center" valign="center"><img src="./media/2.png?raw=true" width="100%"></td>
     <td align="center" valign="center"><img src="./media/3.png?raw=true" width="100%"></td>
+    <td align="center" valign="center"><img src="./media/1.png?raw=true" width="100%"></td>
   </tr>
 </table>
 

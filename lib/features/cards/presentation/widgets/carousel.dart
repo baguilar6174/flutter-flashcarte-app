@@ -73,7 +73,7 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2D3748),
+      backgroundColor: const Color(0xFF161B22),
       body: SafeArea(
         child: Column(
           children: [
@@ -133,18 +133,30 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: _currentIndex > 0 ? _previousCard : null,
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: _currentIndex > 0 ? Colors.white : Colors.white30,
-                      size: 24,
+                  Container(
+                    width: 45,
+                    height: 45,
+                    decoration: const BoxDecoration(
+                      color: Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: _currentIndex > 0 ? _previousCard : null,
+                      icon: Icon(
+                        Icons.arrow_right_alt_sharp,
+                        // color: Color(0xFF2D3748),
+                        color: _currentIndex > 0
+                            ? Colors.white
+                            : Colors.white30,
+                        size: 29,
+                        textDirection: TextDirection.rtl,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 40),
+                  const SizedBox(width: 25),
                   Container(
-                    width: 56,
-                    height: 56,
+                    width: 45,
+                    height: 45,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -152,9 +164,9 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                     child: IconButton(
                       onPressed: _nextCard,
                       icon: const Icon(
-                        Icons.arrow_forward_ios,
+                        Icons.arrow_right_alt_sharp,
                         color: Color(0xFF2D3748),
-                        size: 24,
+                        size: 30,
                       ),
                     ),
                   ),
