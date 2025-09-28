@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter_flashcarte_app/core/core.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
 import 'package:flutter_flashcarte_app/features/cards/presentation/widgets/widgets.dart';
 
@@ -73,7 +74,7 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF161B22),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -84,9 +85,11 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                 children: [
                   IconButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.close,
-                      color: Colors.white70,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
                       size: 24,
                     ),
                   ),
@@ -101,12 +104,7 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                 children: [
                   Text(
                     widget.deckName,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
               ),
@@ -136,18 +134,28 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                   Container(
                     width: 45,
                     height: 45,
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Palette.shadowDark.withValues(alpha: 0.3)
+                              : Palette.shadow.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: IconButton(
                       onPressed: _currentIndex > 0 ? _previousCard : null,
                       icon: Icon(
                         Icons.arrow_right_alt_sharp,
-                        // color: Color(0xFF2D3748),
                         color: _currentIndex > 0
-                            ? Colors.white
-                            : Colors.white30,
+                            ? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.3),
                         size: 29,
                         textDirection: TextDirection.rtl,
                       ),
@@ -157,15 +165,24 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                   Container(
                     width: 45,
                     height: 45,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Palette.shadowDark.withValues(alpha: 0.3)
+                              : Palette.shadow.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: IconButton(
                       onPressed: _nextCard,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_right_alt_sharp,
-                        color: Color(0xFF2D3748),
+                        color: Theme.of(context).colorScheme.onSurface,
                         size: 30,
                       ),
                     ),

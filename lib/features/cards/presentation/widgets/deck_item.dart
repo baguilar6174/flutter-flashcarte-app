@@ -30,13 +30,6 @@ class DeckItem extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: gradientColors,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: gradientColors.first.withValues(alpha: 0.2),
-              blurRadius: Dimens.borderRadius,
-              offset: const Offset(0, 1),
-            ),
-          ],
         ),
         child: Stack(
           children: [
@@ -56,12 +49,7 @@ class DeckItem extends StatelessWidget {
                     ),
                     child: Text(
                       deck.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   // Bottom section with subtitle and value
@@ -71,8 +59,7 @@ class DeckItem extends StatelessWidget {
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      // color: Color(0xFF161b22),
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.borderRadius),
                     ),
                     child: Row(
@@ -80,20 +67,11 @@ class DeckItem extends StatelessWidget {
                       children: [
                         Text(
                           "Words",
-                          style: const TextStyle(
-                            color: Color(0xFF6B7280),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         Text(
                           deck.cardCount.toString(),
-                          style: const TextStyle(
-                            color: Color(0xFF1F2937),
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                          ),
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),

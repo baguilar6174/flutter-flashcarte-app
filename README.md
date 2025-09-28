@@ -7,6 +7,7 @@ This app is part of my **blog series** teaching how to build **scalable Flutter 
 
 ## 🚀 Features
 
+- Vibe coding
 - **Clean Architecture**: presentation, domain, and data layers clearly separated
 - **State management with Cubit (flutter\_bloc)**
 - **Responsive design with `flutter_screenutil`**

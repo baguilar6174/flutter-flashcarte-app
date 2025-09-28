@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_flashcarte_app/core/core.dart';
 import 'package:flutter_flashcarte_app/features/cards/domain/domain.dart';
 
 class FlipCard extends StatefulWidget {
@@ -112,10 +111,8 @@ class _FlipCardState extends State<FlipCard>
             // Main word
             Text(
               text,
-              style: const TextStyle(
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
                 color: Colors.white,
-                fontSize: 48,
-                fontWeight: FontWeight.w300,
                 letterSpacing: 1.2,
               ),
               textAlign: TextAlign.center,
@@ -127,10 +124,8 @@ class _FlipCardState extends State<FlipCard>
             // if (data.pronunciation.isNotEmpty)
             Text(
               text2,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Colors.white.withValues(alpha: .8),
-                fontSize: 18,
-                fontStyle: FontStyle.italic,
               ),
               textAlign: TextAlign.center,
             ),

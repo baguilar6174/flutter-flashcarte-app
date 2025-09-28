@@ -5,10 +5,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Dimens {
   Dimens._();
 
-  static double titleLarge = 20.sp;
+  // Text sizes (responsive with .sp)
+  // Display text styles - largest headings
+  static double displayLarge = 57.sp;
+  static double displayMedium = 45.sp;
+  static double displaySmall = 36.sp;
+
+  // Headline text styles - section headings
+  static double headlineLarge = 32.sp;
+  static double headlineMedium = 28.sp;
+  static double headlineSmall = 24.sp;
+
+  // Title text styles - smaller headings
+  static double titleLarge = 22.sp;
   static double titleMedium = 18.sp;
-  static double titleSmall = 14.sp;
-  // other sizes
+  static double titleSmall = 16.sp;
+
+  // Label text styles - buttons, tabs
+  static double labelLarge = 14.sp;
+  static double labelMedium = 12.sp;
+  static double labelSmall = 11.sp;
+
+  // Body text styles - paragraph text
+  static double bodyLarge = 16.sp;
+  static double bodyMedium = 14.sp;
+  static double bodySmall = 12.sp;
 
   static double zero = 0;
   static double space2 = 2.w;
