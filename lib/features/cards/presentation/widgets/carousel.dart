@@ -197,7 +197,7 @@ class _FlashcardCarouselState extends State<FlashcardCarousel>
                 margin: const EdgeInsets.symmetric(vertical: 20),
                 child: GestureDetector(
                   onTap: () => widget.onCardTap?.call(widget.cards[index]),
-                  child: FlashcardWidget(
+                  child: FlipCard(
                     data: widget.cards[index],
                     isActive: index == _currentIndex,
                   ),
